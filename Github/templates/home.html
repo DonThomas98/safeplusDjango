@@ -10,6 +10,28 @@
 
  {% block contenido_izquierda %}
          
+ {% if request.user.is_staff %}
+ <table>
+
+  <tr>
+    <th>id</th>
+    <th>usuario</th>
+    <th>rut</th>
+
+  </tr>
+  {% for p in clientes %}
+    <tr>
+
+      <td>{{ p.0 }}</td>
+      <td>{{ p.4 }}</td>
+      <td>{{ p.11 }}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+
+ {% endif %}
 
 
 
@@ -19,8 +41,9 @@
          
 
 
-         
-  {% endblock %}
+
+
+  {% endblock contenido_derecha%}
 
 {% block content %}
 
