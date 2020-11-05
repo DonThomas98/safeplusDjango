@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'servicio',
+    'account',
 ]
 
 MIDDLEWARE = [
@@ -80,8 +81,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
         'NAME': 'xe',
-        'USER': 'django',
-        'PASSWORD': 'django',        
+        'USER': 'django20',
+        'PASSWORD': 'django20',        
         'HOST':'127.0.0.1',
         'PORT':'1521'
     }
