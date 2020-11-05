@@ -4,23 +4,26 @@ from django.contrib.auth.models import User
 
 
 class UserProfile(models.Model):
-	user=models.OneToOneField(User, on_delete=models.CASCADE)
-	rut = models.IntegerField()
-	sueldo=models.IntegerField()
-	edad=models.IntegerField()
+    user=models.OneToOneField(User, on_delete=models.CASCADE)
+    rut = models.IntegerField()
+    sueldo=models.IntegerField()
+    edad=models.IntegerField()
 
-	def __str__(self):
-		return self.user.username
+    def __str__(self):
+        return self.user.username
 
 class Multa(models.Model):
-	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-	monto_multa = models.BigIntegerField()
-	descripcion = models.CharField(max_length=50)
-	fecha_multa = models.DateField()
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    monto_multa = models.BigIntegerField()
+    descripcion = models.CharField(max_length=50)
+    fecha_multa = models.DateField()
+  
+    def __str__(self):
+        return str(self.monto_multa) 
+   
+    class Meta:
+        db_table = 'multa'
 
-	class Meta:
-		db_table = 'multa'
-    
 
 class VisitaTerreno(models.Model):
     rut_trabajador = models.ForeignKey(UserProfile, on_delete=models.CASCADE,related_name='cliente')
@@ -54,15 +57,19 @@ class InformeVisita(models.Model):
 
 
 class MaterialCapacitaciones(models.Model):
-	material = models.CharField(max_length=50)
+    material = models.CharField(max_length=50)
 
-	class Meta:
-		db_table = 'material_capacitaciones'
+    def __str__(self):
+        return self.material
+    class Meta:
+        db_table = 'material_capacitaciones'
 
 
 class MaterialSolicitado(models.Model):
     id_material = models.ManyToManyField(MaterialCapacitaciones)
     cantidad = models.BigIntegerField()
+    def __str__(self):
+        return str(self.cantidad)
 
     class Meta:
         db_table = 'material_solicitado'
@@ -80,16 +87,19 @@ class Capacitacion(models.Model):
 
 
 class TipoAccidente(models.Model):
-	descripcion = models.CharField(max_length=15)
+    descripcion = models.CharField(max_length=15)
 
-	class Meta:
-		db_table = 'tipo_accidente'
+    def __str__(self):
+        return self.descripcion
+    class Meta:
+        db_table = 'tipo_accidente'
 
 
 class Accidente(models.Model):
     fecha_accidente = models.DateField()
     id_tipo_accidente = models.ForeignKey(TipoAccidente, on_delete=models.CASCADE)
-
+    def __str__(self):
+        return str(self.id_tipo_accidente)
     class Meta:
         db_table = 'accidente'
 
@@ -97,18 +107,21 @@ class Accidente(models.Model):
 
 
 class RegistroAccidentados(models.Model):
-	id_accidente = models.ForeignKey(Accidente, on_delete=models.CASCADE)
-	rut_trabajador     = models.ForeignKey(UserProfile, on_delete=models.CASCADE,related_name='accidentecliente')
-	class Meta:
-		db_table = 'registro_accidentados'
+    id_accidente = models.ForeignKey(Accidente, on_delete=models.CASCADE)
+    rut_trabajador     = models.ForeignKey(UserProfile, on_delete=models.CASCADE,related_name='accidentecliente')
+    def __str__(self):
+        return str(self.rut_trabajador)
+    class Meta:
+        db_table = 'registro_accidentados'
 
 
 class Asesoria(models.Model):
     evento = models.CharField(max_length=25)
     propuesta = models.CharField(max_length=500)
     visita_asesoria = models.ForeignKey(VisitaTerreno, on_delete=models.CASCADE)
-
-
+    
+    def __str__(self):
+        return self.evento
     class Meta:
         db_table = 'asesoria'
 
@@ -133,7 +146,9 @@ class Contrato(models.Model):
     rut_cliente = models.OneToOneField(User, on_delete=models.CASCADE)
     tipo_contrato =models.OneToOneField(TipoContrato, on_delete=models.CASCADE)
     fecha_contratacion = models.DateField()
-
+    
+    def __str__(self):
+        return str(self.fecha_contratacion)
     class Meta:
         db_table = 'contrato'
 
