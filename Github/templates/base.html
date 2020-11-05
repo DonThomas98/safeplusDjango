@@ -1,14 +1,112 @@
-<!-- templates/base.html -->
+ {% load static %}
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <title>{% block title %}Django Auth Tutorial{% endblock %}</title>
+  <title>{% block title %}Safeplus{% endblock %}</title>
+  <link rel="stylesheet" type="text/css" href={% static '/css/flexboxgrid.css' %}>
 </head>
 <body>
   <main>
+    <div style="background-image: url('{% static 'images/safe.jpg' %}');"> 
+    <div class="col-xs-2">
+    </div><!--fin div col 2-->
+      <div class="col-xs-12">
+
+   
+
+      <nav>
+        <ul>
+          <div class="row">
+          <div class="col-xs-12 col-md-2 col-lg-2"><li><a href="{% url 'home' %}">inicio</a></li></div>
+          <div class="col-xs-12 col-md-2 col-lg-2"><li><a href="#">Nosotros</a></li></div>
+          <div class="col-xs-12 col-md-2 col-lg-2"><li><a href="#">Servicios</a></li></div>
+          <div class="col-xs-12 col-md-2 col-lg-2"><li><a href="#">Servicios</a></li></div>
+          {% if user.is_authenticated %}
+          <div class="col-xs-12 col-md-4 col-lg-4"><li><a href="{% url 'logout' %}">Cerrar Sesion , {{ user.username }}</a></li></div>
+           {% else %}
+           <div class="col-xs-12 col-md-4 col-lg-4"><li><a href="{% url 'login' %}">Conectarse</a></li></div>
+
+            {% endif %}
+          
+        </div>
+        </ul>
+      </nav>
+      <br><br>
+      <div class="row">
+        <div class="col-xs-offset-4 col-xs-8">
+         <!--<img class="fotos" src="{% static 'images/safe.jpg' %}" alt="logo">--> 
+        </div>
+        
+          <div class="col-xs-12">
+            {% block login %}
+
+
+
+            {% endblock %}
+          </div>
+      </div>
+        <br><br><br><br>
+     
+      
     {% block content %}
+
+
+
     {% endblock %}
+
+      <div class="row">
+
+        <div class="col-xs-4">
+          {% block contenido_izquierda %}
+         
+          {% endblock %}
+
+        </div>
+        <div class="col-xs-8">
+
+          <!--Segunda parte de la apgina-->
+          {% block contenido_derecha %}
+         
+          {% endblock %}
+        </div> <!--Fin div col 8-->
+
+      </div>
+      <!--Fin row de 4 y 8 para separa pagina-->
+      
+  <div col-xs-2>
+
+    <div class="row ">
+        <div class="col-xs-offset-4 col-xs-4"> 
+
+          <div style="padding: 15px; background-color:{% block contenido_color%}
+         
+          {% endblock %} ;"> 
+            <div class="center-xs">         
+           {% block contenido_mediano%}
+         
+          {% endblock %}
+            </div>
+
+          </div>
+
+        </div>
+      
+    </div>
+
+<!-- Footer -->
+<div class="col-xs-12 center-xs">
+<footer >
+  <p>Powered by Thomas <a href="" title="" target="" class=""></a></p>
+</footer>
+
+</div>
+
+
+</body>
+</html>
+
+  </div>
   </main>
 </body>
 </html>
