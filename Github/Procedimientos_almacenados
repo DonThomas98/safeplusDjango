@@ -120,6 +120,21 @@ begin
 open clientes for  select material from material_capacitaciones;
 end;
 
+## 9 INSERTAR MATERIALES A USAR EN LA CAPACITACION
+
+create or replace procedure prc_insertar_materiales_capacitacion(
+    v_material        varchar2
+
+)is
+begin
+
+insert into material_capacitaciones  (material)
+VALUES (v_material); 
+commit;
+
+
+end;
+
 
 
 ##METHODO POST DE AUTH_USER

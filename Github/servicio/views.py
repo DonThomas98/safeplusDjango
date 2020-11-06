@@ -67,6 +67,13 @@ def Crear_datos_trabajadores(request):
        
     return render(request,'nuevo_datos_trabajador.html',data)
 
+def Crear_materiales_capacitacion(request):
+
+    if request.method == 'POST':
+        material =request.POST.get('material')
+        agregar_materiales_capacitacion(material)
+    return render(request,'nuevo_material_capacitacion.html')
+       
 
 
 
@@ -133,8 +140,8 @@ def agregar_datos_trabajadores(rut,sueldo,edad,userid):
     cursor.callproc("prc_insertar_datos_trabajador",[rut,sueldo,edad,userid])
 
 
-def crear_materiales_capacitacion(material):
+def agregar_materiales_capacitacion(material):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
-    cursor.callproc("prc_insertar_trabajadores",[material])
+    cursor.callproc("prc_insertar_materiales_capacitacion",[material])
 
