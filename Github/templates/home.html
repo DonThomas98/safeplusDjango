@@ -33,32 +33,13 @@
 
  {% endif %}
 
-<h2>Nuevo CLiente Paso1</h2>
-<form action="" method="POST">
-{% csrf_token %}
-<label for="">contraseña</label>
-<input type="text" name="password">
-<br>
 
-<label for="">Usuario</label>
-<input type="text" name="usuario">
-<br>
-<label for="">nombre</label>
-<input type="text" name="nombre">
-<br>
-<label for="">apellido</label>
-<input type="text"  name="apellido">
-<br>
-<label for="">correo</label>
-<input type="text" name="correo">
-<br>
-<input type="submit" value="Guardar">
-</form>
-{{mensaje}}
   {% endblock %}
 
  {% block contenido_derecha %}
-         
+ <div class="col-xs-12 col-md-2 col-lg-2"><li><a href="{% url 'crear_clientes' %}">Crear Cliente</a></li></div>
+ <div class="col-xs-12 col-md-2 col-lg-2"><li><a href="{% url 'crear_datos_clientes' %}">Agregar Datos Cliente</a></li></div>
+
 
 
 

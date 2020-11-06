@@ -1,9 +1,12 @@
+#1
 create or replace procedure prc_listar_cliente(clientes out SYS_REFCURSOR)
 is
 
 begin
-open clientes for  select * from auth_user join account_UserProfile using(id) where is_staff=0;
+open clientes for  select * from auth_user join account_UserProfile on auth_user.id=account_UserProfile.user_id  where is_staff=0;
 end;
+
+
 
 
 create or replace procedure prc_listar_trabajadores(trabajadores out SYS_REFCURSOR)
@@ -12,6 +15,83 @@ is
 begin
 open trabajadores for  select * from auth_user join account_UserProfile using(id) where is_staff=1 and IS_SUPERUSER=0;
 end;
+#2
+##ESTE ES EL FUNCIONAL
+create or replace procedure prc_insertar_cliente(
+    v_pass         varchar2,
+    v_usuario      varchar2,
+    v_nombre       varchar2,
+    v_apellido     varchar2,
+    v_correo       varchar2
+)is
+begin
+
+insert into auth_user  (PASSWORD,IS_SUPERUSER,USERNAME, FIRST_NAME, LAST_NAME,EMAIL,IS_STAFF,IS_ACTIVE,DATE_JOINED)
+VALUES (v_pass,0,v_usuario, v_nombre, v_apellido, v_correo,0,1,CURRENT_DATE); 
+commit;
+
+
+end;
+
+#3
+##PARA EXTENDER LOS DATOS DE USUARIO
+
+create or replace procedure prc_insertar_datos_cliente(
+    v_rut         number,
+    v_sueldo      number,
+    v_edad        number,
+    v_userid       number
+)is
+begin
+
+insert into account_userprofile  (rut,sueldo,edad, user_id)
+VALUES (v_rut,v_sueldo, v_edad, v_userid); 
+commit;
+
+
+end;
+#4
+##PARA CONSEGUIR LA LISTA DE CLIENTES que no tienen su rut y no son trabajadores
+create or replace procedure prc_listar_id_clientes(clientes_datos out SYS_REFCURSOR)
+is
+
+begin
+open clientes_datos for  select auth_user.id,auth_user.username 
+from auth_user left join account_userprofile
+ on auth_user.id=account_userprofile.user_id
+   where account_userprofile.user_id is null and is_staff=0 ;
+
+end;
+
+
+##METHODO POST DE AUTH_USER
+    if request.method == 'POST':
+        password =request.POST.get('password')
+        usuario =request.POST.get('usuario')
+        nombre =request.POST.get('nombre')
+        apellido =request.POST.get('apellido')
+        correo =request.POST.get('correo')
+        agregar_clientes(password,usuario,nombre,apellido,correo)
+       
+##METHODO POST DE ACCOUNT_USERPROFILE
+
+   if request.method == 'POST':
+        rut =request.POST.get('rut')
+        sueldo =request.POST.get('sueldo')
+        edad =request.POST.get('edad')
+        userid =request.POST.get('userid')
+        agregar_datos_clientes(rut,sueldo,edad,userid)
+       
+
+
+
+
+
+
+
+
+
+
 
 
 
