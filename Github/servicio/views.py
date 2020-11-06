@@ -306,11 +306,11 @@ def listar_accidente():
     return lista
 
 
-############
+############REGISTRO ACCIDENTE
 def agregar_registro_accidente(id_accidente_id,RUT_TRABAJADOR_ID):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
-    cursor.callproc("prc_listar_accidente_registro",[id_accidente_id,RUT_TRABAJADOR_ID])
+    cursor.callproc("prc_insertar_registro_accidente",[id_accidente_id,RUT_TRABAJADOR_ID])
 
 
 

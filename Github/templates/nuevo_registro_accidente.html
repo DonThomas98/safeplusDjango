@@ -29,8 +29,8 @@
  <label for="">Seleccion id cliente</label>
   <select name="id_accidente_id" id="id_accidente_id">
     <option value="">Seleccionar</option>
-      {% for d in listar_clientes2  %}
-      <option value="{{ d.2 }}">{{ d.1 }}</option>
+      {% for d in listar_accidente  %}
+      <option value="{{ d.0 }}">{{ d.1 }} id {{ d.0 }} </option>
       {% endfor %}
 
   </select>
@@ -39,7 +39,7 @@
   <select name="RUT_TRABAJADOR_ID" id="RUT_TRABAJADOR_ID">
     <option value="">Seleccionar</option>
       {% for f in listar_clientes2  %}
-      <option value="{{ f.1 }}">{{ f.0 }}</option>
+      <option value="{{ f.0 }}">id{{ f.0 }} y usuario {{ f.1 }}</option>
       {% endfor %}
 
   </select>
