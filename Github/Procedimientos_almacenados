@@ -14,3 +14,71 @@ open trabajadores for  select * from auth_user join account_UserProfile using(id
 end;
 
 
+
+create or replace procedure prc_insertar_cliente(
+    v_pass         varchar2,
+    v_super         number,
+    v_usuario      varchar2,
+    v_nombre       varchar2,
+    v_apellido     varchar2,
+    v_correo       varchar2,
+    v_staff        number,
+    v_active       number,
+    v_fechaunion    date,
+    v_salida out   number
+)is
+begin
+
+insert into auth_user  (PASSWORD,IS_SUPERUSER,USERNAME, FIRST_NAME, LAST_NAME,EMAIL,IS_STAFF,IS_ACTIVE,DATE_JOINED)
+VALUES (v_pass,v_super,v_usuario, v_nombre, v_apellido, v_correo,v_staff,v_active,v_fechaunion); 
+commit;
+
+v_salida:=1;
+
+exception
+when others then
+    v_salida:=0;
+
+end;
+
+
+def agregar_clientes(password,superusuario,usuario,nombre,apellido,correo,staff,activo,fecha):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida =cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc("PRC_INSERTAR_CLIENTE",[password,superusuario,usuario,nombre,apellido,correo,staff,activo,fecha])
+    return salida.getvalue()
+
+def agregar_clientes(password,usuario,nombre,apellido,correo):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida =cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc("prc_insertar_cliente",[password,usuario,nombre,apellido,correo,salida])
+    return salida.getvalue()
+
+
+
+
+
+    
+create or replace procedure prc_insertar_cliente(
+    v_pass         varchar2,
+    v_usuario      varchar2,
+    v_nombre       varchar2,
+    v_apellido     varchar2,
+    v_correo       varchar2,
+    v_salida out   number
+)is
+begin
+
+insert into auth_user  (PASSWORD,IS_SUPERUSER,USERNAME, FIRST_NAME, LAST_NAME,EMAIL,IS_STAFF,IS_ACTIVE,DATE_JOINED)
+VALUES (v_pass,0,v_usuario, v_nombre, v_apellido, v_correo,0,1,CURRENT_DATE); 
+commit;
+
+v_salida:=1;
+
+exception
+when others then
+    v_salida:=0;
+
+end;
