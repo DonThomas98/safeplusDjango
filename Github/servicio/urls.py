@@ -11,6 +11,12 @@ urlpatterns = [
     path('crear_materiales', views.Crear_materiales_capacitacion , name='Crear_materiales_capacitacion'),
     path('crear_materiales_solicitados', views.Crear_datos_materiales_solicitados , name='Crear_datos_materiales_solicitados'),
     path('Crear_capacitaciones', views.Crear_capacitaciones , name='Crear_capacitaciones'),
+    path('reportar_accidentes', views.reportar_accidentes , name='reportar_accidentes'),
+    path('reportar_tipo_accidentes', views.reportar_tipo_accidentes , name='reportar_tipo_accidentes'),
+    path('Crear_registro_accidente', views.Crear_registro_accidente , name='Crear_registro_accidente'),
+
+
+
 
 
 

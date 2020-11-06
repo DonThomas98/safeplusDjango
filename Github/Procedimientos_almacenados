@@ -216,3 +216,82 @@ open accidente for  select * from tipo_accidente;
 end;
 
 
+
+
+##
+create or replace procedure prc_insertar_accidente(
+    v_fecha               date,
+    v_tipo_accidente      number
+
+)is
+begin
+
+insert into accidente   (fecha_accidente,id_tipo_accidente_id)
+VALUES (v_fecha,v_tipo_accidente); 
+commit;
+
+
+
+end;
+
+
+##
+
+create or replace procedure prc_insertar_tipo_accidente(
+    v_descripcion          varchar2
+
+)is
+begin
+
+insert into tipo_accidente   (descripcion)
+VALUES (v_descripcion); 
+commit;
+
+
+
+end;
+
+
+##
+
+create or replace procedure prc_listar_accidente(accidente out SYS_REFCURSOR)
+is
+
+begin
+open accidente for  select * from accidente ;
+
+
+
+
+end;
+
+
+
+
+
+##INSERT REGISTRO ACCIDENTADOs
+
+create or replace procedure prc_insertar_registro_accidente(
+    v_accidente            number,
+    v_ruttrabajador     number
+
+)is
+begin
+
+insert into registro_accidentados   (id_accidente_id,RUT_TRABAJADOR_ID)
+VALUES (v_accidente,v_ruttrabajador); 
+commit;
+
+
+
+end;
+create or replace procedure prc_listar_accidente_registro(accidente out SYS_REFCURSOR)
+is
+
+begin
+open accidente for select * from accidente;
+
+
+
+
+end;

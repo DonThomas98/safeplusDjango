@@ -241,30 +241,97 @@ def listar_clientes2():
         lista.append(fila)
     return lista
 
+def agregar_tipo_accidente(descripcion):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    cursor.callproc("prc_insertar_tipo_accidente",[descripcion])
+
+
+
+def reportar_accidentes(request):
+    data= {
+        'listar_accidentes':listar_accidentes(),
+    }
+
+    if request.method == 'POST':
+        fecha_accidente =request.POST.get('fecha_accidente')
+        ID_TIPO_ACCIDENTE_ID = request.POST.get('ID_TIPO_ACCIDENTE_ID')
+        agregar_accidente(fecha_accidente,ID_TIPO_ACCIDENTE_ID)
+       
+    return render(request,'nuevo_accidente.html',data)
+
+
+
 
 def listar_accidentes():
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
 
-    cursor.callproc("prc_listar_cliente2",[out_cur])
+    cursor.callproc("prc_listar_tipo_accidente",[out_cur])
 
     lista=[]
     for fila in out_cur:
         lista.append(fila)
     return lista
 
-def reportar_accidentes(request):
+def agregar_accidente(fecha_accidente,id_tipo_accidente_id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    cursor.callproc("prc_insertar_accidente",[fecha_accidente,id_tipo_accidente_id])
+
+
+
+
+def reportar_tipo_accidentes(request):
+
+    if request.method == 'POST':
+        descripcion =request.POST.get('descripcion')
+        agregar_tipo_accidente(descripcion)
+       
+    return render(request,'nuevo_tipo_accidente.html')
+
+
+
+def listar_accidente():
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("prc_listar_accidente",[out_cur])
+
+    lista=[]
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
+
+############
+def agregar_registro_accidente(id_accidente_id,RUT_TRABAJADOR_ID):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    cursor.callproc("prc_listar_accidente_registro",[id_accidente_id,RUT_TRABAJADOR_ID])
+
+
+
+
+
+def Crear_registro_accidente(request):
     data= {
-        'listar_materiales':listar_materiales(),
+        'listar_accidente':listar_accidente(),
+        'listar_clientes2':listar_clientes2()
     }
     if request.method == 'POST':
-        cantidad =request.POST.get('cantidad')
-        id_material_id = request.POST.get('id_material_id')
-        MATERIAL_CAPACITACION_ID = request.POST.get('MATERIAL_CAPACITACION_ID')
+        id_accidente_id =request.POST.get('id_accidente_id')
+        RUT_TRABAJADOR_ID = request.POST.get('RUT_TRABAJADOR_ID')
 
-
-        agregar_materiales_solicitados(cantidad,id_material_id,MATERIAL_CAPACITACION_ID)
+        agregar_registro_accidente(id_accidente_id,RUT_TRABAJADOR_ID)
        
-    return render(request,'nuevo_material_solicitado.html',data)
+    return render(request,'nuevo_registro_accidente.html',data)
+
+
+
+
+
+
 

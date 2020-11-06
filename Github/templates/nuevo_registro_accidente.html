@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Safeplus Inicio{% endblock %}
+
+{% block login %}
+
+
+
+{% endblock %}
+
+ {% block contenido_izquierda %}
+<h2>Nuevo Trabajador</h2>
+<form action="" method="POST">
+{% csrf_token %}
+
+    <label for=""></label>
+
+
+</form>
+
+
+
+  {% endblock %}
+
+ {% block contenido_derecha %}
+
+<form action="" method="POST">
+  {% csrf_token %}
+ <label for="">Seleccion id cliente</label>
+  <select name="id_accidente_id" id="id_accidente_id">
+    <option value="">Seleccionar</option>
+      {% for d in listar_clientes2  %}
+      <option value="{{ d.2 }}">{{ d.1 }}</option>
+      {% endfor %}
+
+  </select>
+
+<label for="">Seleccion tipo de accidente</label>
+  <select name="RUT_TRABAJADOR_ID" id="RUT_TRABAJADOR_ID">
+    <option value="">Seleccionar</option>
+      {% for f in listar_clientes2  %}
+      <option value="{{ f.1 }}">{{ f.0 }}</option>
+      {% endfor %}
+
+  </select>
+
+  <br>
+
+  <br>
+
+  <input type="submit" value="Guardar">
+  </form>
+
+
+
+  {% endblock contenido_derecha%}
+
+{% block content %}
+
+{% endblock %}

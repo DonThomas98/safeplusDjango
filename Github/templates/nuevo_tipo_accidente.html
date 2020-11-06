@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Safeplus Inicio{% endblock %}
+
+{% block login %}
+
+
+
+{% endblock %}
+
+ {% block contenido_izquierda %}
+<h2>Nuevo Trabajador</h2>
+<form action="" method="POST">
+{% csrf_token %}
+
+    <label for=""></label>
+
+
+</form>
+
+
+
+  {% endblock %}
+
+ {% block contenido_derecha %}
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <label for="">tipo de accidente</label>
+  <input type="text" name="descripcion">
+  <br>
+  
+  <br>
+
+  <br>
+
+  <input type="submit" value="Guardar">
+  </form>
+
+
+
+  {% endblock contenido_derecha%}
+
+{% block content %}
+
+{% endblock %}
