@@ -9,6 +9,10 @@ urlpatterns = [
     path('crear_trabajadores', views.Crear_trabajadores , name='crear_trabajadores'),
     path('Crear_datos_trabajadores', views.Crear_datos_trabajadores , name='Crear_datos_trabajadores'),
     path('crear_materiales', views.Crear_materiales_capacitacion , name='Crear_materiales_capacitacion'),
+    path('crear_materiales_solicitados', views.Crear_datos_materiales_solicitados , name='Crear_datos_materiales_solicitados'),
+    path('Crear_capacitaciones', views.Crear_capacitaciones , name='Crear_capacitaciones'),
+
+
 
 
 ]

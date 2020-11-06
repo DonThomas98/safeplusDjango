@@ -62,14 +62,6 @@ class MaterialCapacitaciones(models.Model):
     class Meta:
         db_table = 'material_capacitaciones'
 
-class MaterialSolicitado(models.Model):
-    id_material = models.ManyToManyField(MaterialCapacitaciones)
-    cantidad = models.BigIntegerField()
-    def __str__(self):
-        return str(self.cantidad)
-
-    class Meta:
-        db_table = 'material_solicitado'
 
 
 class Capacitacion(models.Model):
@@ -77,13 +69,24 @@ class Capacitacion(models.Model):
     fecha_capacitacion           = models.DateField()
     rut_trabajador               = models.ForeignKey(UserProfile, on_delete=models.CASCADE,related_name='capacitacioncliente')
     rut_cliente                  = models.ForeignKey(UserProfile, on_delete=models.CASCADE,related_name='capacitaciontrabajador')
-    id_Materialsolicitado        = models.ForeignKey(MaterialSolicitado, on_delete=models.CASCADE, default="",)
 
     class Meta:
         db_table = 'capacitacion'
     def __str__(self):
         return str(self.fecha_capacitacion)
 
+
+
+class MaterialSolicitado(models.Model):
+    cantidad = models.BigIntegerField()
+    id_material = models.ForeignKey(MaterialCapacitaciones, on_delete=models.CASCADE)
+    material_capacitacion        = models.ForeignKey(Capacitacion, on_delete=models.CASCADE,related_name='materialsolicitadocapacitacion')
+
+    def __str__(self):
+        return str(self.cantidad)
+
+    class Meta:
+        db_table = 'material_solicitado'
 
 
 

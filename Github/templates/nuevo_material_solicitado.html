@@ -9,7 +9,7 @@
 {% endblock %}
 
  {% block contenido_izquierda %}
-<h2>Nuevo Trabajador</h2>
+<h2>Nuevos datos del Trabajador</h2>
 <form action="" method="POST">
 {% csrf_token %}
 
@@ -26,21 +26,15 @@
 
 <form action="" method="POST">
   {% csrf_token %}
-  <label for="">rut</label>
-  <input type="number" name="rut">
+ 
+  <label for="">cantidad</label>
+  <input type="number" name="cantidad">
   <br>
-  
-  <label for="">sueldo</label>
-  <input type="number" name="sueldo">
-  <br>
-  <label for="">edad</label>
-  <input type="number" name="edad">
-  <br>
-  <label for="">Seleccion Cliente</label>
-  <select name="userid" id="userid">
+  <label for="">Seleccion de material</label>
+  <select name="id_material_id" id="id_material_id">
     <option value="">Seleccionar</option>
-      {% for d in listar_clientes2  %}
-      <option value="{{ d.0 }}">{{ d.1 }}</option>
+      {% for d in listar_materiales  %}
+      <option value="{{ d.0 }}">{{ d.1 }}{{ d.0 }}</option>
       {% endfor %}
 
   </select>
