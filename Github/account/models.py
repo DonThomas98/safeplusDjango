@@ -54,17 +54,6 @@ class InformeVisita(models.Model):
         db_table = 'informe_visita'
 
 
-
-class Capacitacion(models.Model):
-	fecha_solicitud    = models.DateField()
-	fecha_capacitacion = models.DateField()
-	rut_trabajador     = models.ForeignKey(UserProfile, on_delete=models.CASCADE,related_name='capacitacioncliente')
-	rut_cliente        = models.ForeignKey(UserProfile, on_delete=models.CASCADE,related_name='capacitaciontrabajador')
-
-	class Meta:
-		db_table = 'capacitacion'
-
-
 class MaterialCapacitaciones(models.Model):
     material = models.CharField(max_length=50)
 
@@ -73,16 +62,31 @@ class MaterialCapacitaciones(models.Model):
     class Meta:
         db_table = 'material_capacitaciones'
 
-
 class MaterialSolicitado(models.Model):
     id_material = models.ManyToManyField(MaterialCapacitaciones)
     cantidad = models.BigIntegerField()
-    id_capacitacion =models.ForeignKey(Capacitacion, on_delete=models.CASCADE, default="",)
     def __str__(self):
         return str(self.cantidad)
 
     class Meta:
         db_table = 'material_solicitado'
+
+
+class Capacitacion(models.Model):
+    fecha_solicitud              = models.DateField()
+    fecha_capacitacion           = models.DateField()
+    rut_trabajador               = models.ForeignKey(UserProfile, on_delete=models.CASCADE,related_name='capacitacioncliente')
+    rut_cliente                  = models.ForeignKey(UserProfile, on_delete=models.CASCADE,related_name='capacitaciontrabajador')
+    id_Materialsolicitado        = models.ForeignKey(MaterialSolicitado, on_delete=models.CASCADE, default="",)
+
+    class Meta:
+        db_table = 'capacitacion'
+    def __str__(self):
+        return str(self.fecha_capacitacion)
+
+
+
+
 
 
 
