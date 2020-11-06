@@ -15,8 +15,9 @@ is
 begin
 open trabajadores for  select * from auth_user join account_UserProfile using(id) where is_staff=1 and IS_SUPERUSER=0;
 end;
+
 #2
-##ESTE ES EL FUNCIONAL
+
 create or replace procedure prc_insertar_cliente(
     v_pass         varchar2,
     v_usuario      varchar2,
@@ -62,6 +63,63 @@ from auth_user left join account_userprofile
    where account_userprofile.user_id is null and is_staff=0 ;
 
 end;
+
+#5
+create or replace procedure prc_insertar_trabajadores(
+    v_pass         varchar2,
+    v_usuario      varchar2,
+    v_nombre       varchar2,
+    v_apellido     varchar2,
+    v_correo       varchar2
+)is
+begin
+
+insert into auth_user  (PASSWORD,IS_SUPERUSER,USERNAME, FIRST_NAME, LAST_NAME,EMAIL,IS_STAFF,IS_ACTIVE,DATE_JOINED)
+VALUES (v_pass,0,v_usuario, v_nombre, v_apellido, v_correo,1,1,CURRENT_DATE); 
+commit;
+
+
+end;
+
+#6
+##PARA CONSEGUIR LA LISTA DE TRABAJADORES que no tienen su rut .
+create or replace procedure prc_listar_id_trabajadores(trabajadores_datos out SYS_REFCURSOR)
+is
+
+begin
+open trabajadores_datos for  select auth_user.id,auth_user.username 
+from auth_user left join account_userprofile
+ on auth_user.id=account_userprofile.user_id
+   where account_userprofile.user_id is null and is_staff=1 and is_superuser=0 ;
+
+end;
+
+#7
+create or replace procedure prc_insertar_datos_trabajador(
+    v_rut         number,
+    v_sueldo      number,
+    v_edad        number,
+    v_userid       number
+)is
+begin
+
+insert into account_userprofile  (rut,sueldo,edad, user_id)
+VALUES (v_rut,v_sueldo, v_edad, v_userid); 
+commit;
+
+
+end;
+
+#8 Listar Materiales
+
+
+create or replace procedure prc_listar_materiales(clientes out SYS_REFCURSOR)
+is
+
+begin
+open clientes for  select material from material_capacitaciones;
+end;
+
 
 
 ##METHODO POST DE AUTH_USER
@@ -120,21 +178,6 @@ when others then
     v_salida:=0;
 
 end;
-
-
-def agregar_clientes(password,superusuario,usuario,nombre,apellido,correo,staff,activo,fecha):
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    salida =cursor.var(cx_Oracle.NUMBER)
-    cursor.callproc("PRC_INSERTAR_CLIENTE",[password,superusuario,usuario,nombre,apellido,correo,staff,activo,fecha])
-    return salida.getvalue()
-
-def agregar_clientes(password,usuario,nombre,apellido,correo):
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    salida =cursor.var(cx_Oracle.NUMBER)
-    cursor.callproc("prc_insertar_cliente",[password,usuario,nombre,apellido,correo,salida])
-    return salida.getvalue()
 
 
 

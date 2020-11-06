@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Safeplus Inicio{% endblock %}
+
+{% block login %}
+
+
+
+{% endblock %}
+
+ {% block contenido_izquierda %}
+<h2>Nuevos datos del Trabajador</h2>
+<form action="" method="POST">
+{% csrf_token %}
+
+    <label for=""></label>
+
+
+</form>
+
+
+
+  {% endblock %}
+
+ {% block contenido_derecha %}
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <label for="">rut</label>
+  <input type="number" name="rut">
+  <br>
+  
+  <label for="">sueldo</label>
+  <input type="number" name="sueldo">
+  <br>
+  <label for="">edad</label>
+  <input type="number" name="edad">
+  <br>
+  <label for="">Seleccion Trabajador</label>
+  <select name="userid" id="userid">
+    <option value="">Seleccionar</option>
+      {% for d in datostrabajadores  %}
+      <option value="{{ d.0 }}">{{ d.1 }}{{ d.0 }}</option>
+      {% endfor %}
+
+  </select>
+  <br>
+  <br>
+
+  <input type="submit" value="Guardar">
+  </form>
+
+
+
+  {% endblock contenido_derecha%}
+
+{% block content %}
+
+{% endblock %}

@@ -10,14 +10,7 @@ def Home(request):
     }
     ##agregar_datos_clientes(123456789,150000,28,141) funcional
     ##agregar_clientes('perroson','elguason','Juan','Aguilera','jg@gmail.com',)
-    if request.method == 'POST':
-        rut =request.POST.get('rut')
-        sueldo =request.POST.get('sueldo')
-        edad =request.POST.get('edad')
-        userid =request.POST.get('userid')
-        agregar_datos_clientes(rut,sueldo,edad,userid)
-       
-
+   
 
     return render(request,'home.html',data)
 
@@ -48,6 +41,31 @@ def Crear_datos_clientes(request):
        
     return render(request,'nuevo_datos_cliente.html',data)
 
+
+def Crear_trabajadores(request):
+
+    if request.method == 'POST':
+        password =request.POST.get('password')
+        usuario =request.POST.get('usuario')
+        nombre =request.POST.get('nombre')
+        apellido =request.POST.get('apellido')
+        correo =request.POST.get('correo')
+        agregar_trabajadores(password,usuario,nombre,apellido,correo)
+    return render(request,'nuevo_trabajador.html')
+       
+
+def Crear_datos_trabajadores(request):
+    data= {
+        'datostrabajadores':listar_trabajadores(),
+    }
+    if request.method == 'POST':
+        rut =request.POST.get('rut')
+        sueldo =request.POST.get('sueldo')
+        edad =request.POST.get('edad')
+        userid =request.POST.get('userid')
+        agregar_datos_trabajadores(rut,sueldo,edad,userid)
+       
+    return render(request,'nuevo_datos_trabajador.html',data)
 
 
 
@@ -83,7 +101,7 @@ def listar_trabajadores():
     cursor = django_cursor.connection.cursor()
     out_cur = django_cursor.connection.cursor()
 
-    cursor.callproc("prc_listar_trabajadores",[out_cur])
+    cursor.callproc("prc_listar_id_trabajadores",[out_cur])
 
     lista=[]
     for fila in out_cur:
@@ -96,8 +114,27 @@ def agregar_clientes(password,usuario,nombre,apellido,correo):
     cursor = django_cursor.connection.cursor()
     cursor.callproc("prc_insertar_cliente",[password,usuario,nombre,apellido,correo])
 
+
 def agregar_datos_clientes(rut,sueldo,edad,userid):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     cursor.callproc("prc_insertar_datos_cliente",[rut,sueldo,edad,userid])
+
+
+def agregar_trabajadores(password,usuario,nombre,apellido,correo):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    cursor.callproc("prc_insertar_trabajadores",[password,usuario,nombre,apellido,correo])
+
+
+def agregar_datos_trabajadores(rut,sueldo,edad,userid):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    cursor.callproc("prc_insertar_datos_trabajador",[rut,sueldo,edad,userid])
+
+
+def crear_materiales_capacitacion(material):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    cursor.callproc("prc_insertar_trabajadores",[material])
 
