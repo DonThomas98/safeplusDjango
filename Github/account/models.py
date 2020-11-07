@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 
 
 class UserProfile(models.Model):
-    user=models.OneToOneField(User, on_delete=models.CASCADE)
     rut = models.IntegerField()
+    user=models.OneToOneField(User, on_delete=models.CASCADE)
     sueldo=models.IntegerField()
     edad=models.IntegerField()
 
@@ -13,8 +13,8 @@ class UserProfile(models.Model):
         return self.user.username
 
 class Multa(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     monto_multa = models.BigIntegerField()
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     descripcion = models.CharField(max_length=50)
     fecha_multa = models.DateField()
   
@@ -26,16 +26,16 @@ class Multa(models.Model):
 
 
 class VisitaTerreno(models.Model):
+    fecha_visita = models.DateField()
     rut_trabajador = models.ForeignKey(UserProfile, on_delete=models.CASCADE,related_name='cliente')
     rut_cliente = models.ForeignKey(UserProfile, on_delete=models.CASCADE,related_name='trabajador')
-    fecha_visita = models.DateField()
 
     class Meta:
         db_table = 'visita_terreno'
 
 class InformeVisita(models.Model):
-    id_visita = models.OneToOneField(VisitaTerreno, on_delete=models.CASCADE)
     introduccion = models.CharField(max_length=250)
+    id_visita = models.OneToOneField(VisitaTerreno, on_delete=models.CASCADE)
     resultados_evaluacion = models.CharField(max_length=500)
     autoevaluacion = models.CharField(max_length=1)
     doc_actualizados = models.CharField(max_length=1)
@@ -115,6 +115,7 @@ class Accidente(models.Model):
 
 
 class RegistroAccidentados(models.Model):
+    gravedad     =  models.CharField(max_length=30)
     id_accidente = models.ForeignKey(Accidente, on_delete=models.CASCADE)
     rut_trabajador     = models.ForeignKey(UserProfile, on_delete=models.CASCADE,related_name='accidentecliente')
     def __str__(self):
@@ -135,8 +136,8 @@ class Asesoria(models.Model):
 
 
 class AntecedentesAsesoria(models.Model):
-    id_asesoria = models.ForeignKey(Asesoria, on_delete=models.CASCADE)
     descripcion_documento = models.CharField(max_length=50)
+    id_asesoria = models.ForeignKey(Asesoria, on_delete=models.CASCADE)
     documento = models.TextField(blank=True, null=True)  # This field type is a guess.
 
     class Meta:
@@ -151,9 +152,9 @@ class TipoContrato(models.Model):
 
 
 class Contrato(models.Model):
+    fecha_contratacion = models.DateField()
     rut_cliente = models.OneToOneField(User, on_delete=models.CASCADE)
     tipo_contrato =models.OneToOneField(TipoContrato, on_delete=models.CASCADE)
-    fecha_contratacion = models.DateField()
     
     def __str__(self):
         return str(self.fecha_contratacion)

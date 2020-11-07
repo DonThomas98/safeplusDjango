@@ -43,7 +43,7 @@ def Crear_clientes(request):
 
 def Crear_datos_clientes(request):
     data= {
-        'datosclientes':listar_datos_clientes(),
+        'listar_datos_clientes':listar_datos_clientes(),
     }
     if request.method == 'POST':
         rut =request.POST.get('rut')
@@ -91,10 +91,11 @@ def Crear_materiales_capacitacion(request):
 
 
     
-       
+       ##HAY QUE TRAER UN SELECT DE CAPACITACION
 def Crear_datos_materiales_solicitados(request):
     data= {
         'listar_materiales':listar_materiales(),
+        'listar_capacitaciones':listar_capacitaciones
     }
     if request.method == 'POST':
         cantidad =request.POST.get('cantidad')
@@ -139,6 +140,18 @@ def listar_trabajadores():
     out_cur = django_cursor.connection.cursor()
 
     cursor.callproc("prc_listar_id_trabajadores",[out_cur])
+
+    lista=[]
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
+def listar_capacitaciones():
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("prc_listar_capacitaciones",[out_cur])
 
     lista=[]
     for fila in out_cur:
@@ -247,6 +260,18 @@ def agregar_tipo_accidente(descripcion):
     cursor.callproc("prc_insertar_tipo_accidente",[descripcion])
 
 
+def reportar_tipo_accidentes(request):
+
+
+    if request.method == 'POST':
+        descripcion =request.POST.get('descripcion')
+        agregar_tipo_accidente(descripcion)
+       
+    return render(request,'nuevo_tipo_accidente.html')
+
+
+
+
 
 def reportar_accidentes(request):
     data= {
@@ -307,10 +332,10 @@ def listar_accidente():
 
 
 ############REGISTRO ACCIDENTE
-def agregar_registro_accidente(id_accidente_id,RUT_TRABAJADOR_ID):
+def agregar_registro_accidente(gravedad,id_accidente_id,RUT_TRABAJADOR_ID):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
-    cursor.callproc("prc_insertar_registro_accidente",[id_accidente_id,RUT_TRABAJADOR_ID])
+    cursor.callproc("prc_insertar_registro_accidente",[gravedad,id_accidente_id,RUT_TRABAJADOR_ID])
 
 
 
@@ -322,15 +347,37 @@ def Crear_registro_accidente(request):
         'listar_clientes2':listar_clientes2()
     }
     if request.method == 'POST':
+        gravedad =request.POST.get('gravedad')
         id_accidente_id =request.POST.get('id_accidente_id')
         RUT_TRABAJADOR_ID = request.POST.get('RUT_TRABAJADOR_ID')
 
-        agregar_registro_accidente(id_accidente_id,RUT_TRABAJADOR_ID)
+        agregar_registro_accidente(gravedad,id_accidente_id,RUT_TRABAJADOR_ID)
        
     return render(request,'nuevo_registro_accidente.html',data)
 
+##Vistas visita terreno 
+
+def agregar_visita_terreno(fecha_visita,rut_cliente_id,rut_trabajador_id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    cursor.callproc("prc_insertar_visita_terreno",[fecha_visita,rut_cliente_id,rut_trabajador_id])
 
 
+
+
+def registrar_visita_terreno(request):
+    data= {
+        'listar_clientes2':listar_clientes2(),
+        'listar_trabajadores_todos':listar_trabajadores_todos()
+    }
+
+    if request.method == 'POST':
+        fecha_visita =request.POST.get('fecha_visita')
+        rut_cliente_id = request.POST.get('rut_cliente_id')
+        rut_trabajador_id = request.POST.get('rut_trabajador_id')
+
+        agregar_visita_terreno(fecha_visita,rut_cliente_id,rut_trabajador_id)
+    return render(request,'nuevo_visita_terreno.html',data)
 
 
 

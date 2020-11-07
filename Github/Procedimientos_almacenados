@@ -1,4 +1,5 @@
-#1
+
+---1 PROCEDURE QUE LISTA LOS CLIENTES QUE ESTAN EXTENDIDOS
 create or replace procedure prc_listar_cliente(clientes out SYS_REFCURSOR)
 is
 
@@ -6,9 +7,9 @@ begin
 open clientes for  select * from auth_user join account_UserProfile on auth_user.id=account_UserProfile.user_id  where is_staff=0;
 end;
 
+---2 LISTA TRABAJADORES QUE ESTEN EXTENDIDOS
 
 
-#2 seleccionar trabajadores
 create or replace procedure prc_listar_trabajadores(trabajadores out SYS_REFCURSOR)
 is
 
@@ -17,8 +18,7 @@ open trabajadores for  select * from auth_user join account_UserProfile on auth_
 end;
 
 
-#3
-
+---3 ESTE PROCEDURE CREA CLIENTES EN AUTH_USER , AUN NO EXTENDIDOS
 create or replace procedure prc_insertar_cliente(
     v_pass         varchar2,
     v_usuario      varchar2,
@@ -29,14 +29,14 @@ create or replace procedure prc_insertar_cliente(
 begin
 
 insert into auth_user  (PASSWORD,IS_SUPERUSER,USERNAME, FIRST_NAME, LAST_NAME,EMAIL,IS_STAFF,IS_ACTIVE,DATE_JOINED)
-VALUES (v_pass,0,v_usuario, v_nombre, v_apellido, v_correo,0,1,CURRENT_DATE); 
+VALUES                  (v_pass,0,v_usuario, v_nombre, v_apellido, v_correo,0,1,CURRENT_DATE); 
 commit;
 
 
 end;
 
-#4
-##PARA EXTENDER LOS DATOS DE USUARIO
+
+---ESTE PROCEDURE EXTIENDE EL MODELO CLIENTE PERMITIENDO UNA MAYOR ESPECIFICACION DE AUTH_USER
 
 create or replace procedure prc_insertar_datos_cliente(
     v_rut         number,
@@ -53,9 +53,9 @@ commit;
 
 end;
 
-#5
-##PARA CONSEGUIR LA LISTA DE CLIENTES que no tienen su rut y no son trabajadores
 
+---ESTE PROCEDURA LISTA LOS TRABAJADORES (IS_STAFF=1 AND ID_SUPERUSER=0) QUE AUN NO HAN SIDO EXTENDIDOS
+---TRAE EN POCISION 0 LA ID DE AUTH_USER Y EN POCISION 1 USERNAME DE AUTH_USER
 create or replace procedure prc_listar_id_clientes(clientes_datos out SYS_REFCURSOR)
 is
 
@@ -67,8 +67,9 @@ from auth_user left join account_userprofile
 
 end;
 
-#6
 
+
+----INSERT USUARIOS CON IS_STAFF=1 EN AUTH_USER PARA DAR ENTENDER QUE SON TRABAJADORES
 create or replace procedure prc_insertar_trabajadores(
     v_pass         varchar2,
     v_usuario      varchar2,
@@ -78,15 +79,18 @@ create or replace procedure prc_insertar_trabajadores(
 )is
 begin
 
-insert into auth_user  (PASSWORD,IS_SUPERUSER,USERNAME, FIRST_NAME, LAST_NAME,EMAIL,IS_STAFF,IS_ACTIVE,DATE_JOINED)
-VALUES (v_pass,0,v_usuario, v_nombre, v_apellido, v_correo,1,1,CURRENT_DATE); 
+insert into auth_user  (PASSWORD,IS_SUPERUSER,USERNAME, FIRST_NAME, LAST_NAME, EMAIL,  IS_STAFF,IS_ACTIVE,DATE_JOINED)
+VALUES                  (v_pass,        0,    v_usuario, v_nombre, v_apellido, v_correo,  1,         1,   CURRENT_DATE); 
 commit;
 
 
 end;
 
-#7
-##PARA CONSEGUIR LA LISTA DE TRABAJADORES que no tienen su rut .
+
+
+---TRAE LOS TRABAJADORE DE AUTH_USER IS_STAFF=1 QUE AUN NO ESTAN ASOCIADOS A ACCOUNT_PROFILE (EL MODELO USER EXTENDIDO)
+--0 = ID
+--1 = USERNAME
 
 create or replace procedure prc_listar_id_trabajadores(trabajadores_datos out SYS_REFCURSOR)
 is
@@ -99,9 +103,11 @@ from auth_user left join account_userprofile
 
 end;
 
-#8
 
-create or replace procedure prc_insertar_datos_trabajador(
+--EXTIENDE EL usuario AL MODELO ACCOUNT_USERPROFILE , PARA DIFERENCIAR CLI/TRAB EN SU RESPECTIVO MODELO SE TRAERA LISTARCLIENTE Y LISTAR TRABAJADOR
+
+
+create or replace procedure prc_insertar_datos_extendidos(
     v_rut         number,
     v_sueldo      number,
     v_edad        number,
@@ -116,17 +122,20 @@ commit;
 
 end;
 
-#9 Listar Materiales
-
+---LISTA MATERIALES
+--0 =ID
+--1 =MATERIAL
 
 create or replace procedure prc_listar_materiales(clientes out SYS_REFCURSOR)
 is
 
 begin
-open clientes for  select * from material_capacitaciones;
+open clientes for  select ID,MATERIAL from material_capacitaciones;
 end;
 
-## 10 INSERTAR MATERIALES A USAR EN LA CAPACITACION
+---iNSERTA MATERIALES A USAR EN CAPACITACION
+--0 ID
+--1 MATERIAL
 
 create or replace procedure prc_insertar_materiales_capacitacion(
     v_material        varchar2
@@ -141,37 +150,28 @@ commit;
 
 end;
 
-##11 INSERTA CANTIDAD DE MATERIALES A USAR EN UNA CAPACITACION
 
+
+
+-- INSERTA CANTIDAD DE MATERIALES A USAR EN UNA CAPACITACION (MATERIAL SOLICITADO)
 
 create or replace procedure prc_insertar_materiales_solicitados(
 
     v_cantidad      number,
-    v_material      number,
-    v_capacitacion  number
+    v_materialid      number,
+    v_capacitacionid  number
 )is
 begin
 
 insert into material_solicitado  (cantidad,id_material_id,MATERIAL_CAPACITACION_ID)
-VALUES (v_cantidad,v_material,v_capacitacion); 
+VALUES (v_cantidad,v_materialid,v_capacitacionid); 
 
 
 commit;
 end;
 
-#12 Lista materiales los cuales aun no han sido usados pendiente
 
-create or replace procedure prc_listar_materiales_capacitacion(material_solicitado out SYS_REFCURSOR)
-is
-
-begin
-open material_solicitado for  
-select * from material_solicitado  left join capacitacion on material_solicitado.id=capacitacion.id_materialsolicitado_id where capacitacion.id_materialsolicitado_id is null;
-end;
-
-
-##13 Crea la capacitacion pendiente
-
+---CREA LA CAPACITACION
 
 
 create or replace procedure prc_crear_capacitacion(
@@ -193,32 +193,45 @@ commit;
 
 end;
 
-   ##LISTRA CLIENTES 
-create or replace procedure prc_listar_cliente2(clientes out SYS_REFCURSOR)
+--ESTE LISTAR TRAE material_capacitaciones
+
+create or replace procedure prc_listar_capacitaciones(capacitaciones out SYS_REFCURSOR)
 is
 
 begin
-open clientes for select auth_user.id,auth_user.username 
-from auth_user  join account_userprofile
- on auth_user.id=account_userprofile.user_id
-   where account_userprofile.user_id is not null and is_staff=0; 
+open capacitaciones for  select * from capacitacion;
+
 end;
 
 
 
-##Lista tipos de ACCIDENTE
 
+--ESTE LISTAR MUESTRA LA CANTIDAD DE MATERIALES-MATERIALES (MATERIAL_SOLICITADO) QUE AUN NO A SIDO ASIGNADO A UNA CAPACITACION
+--PENDIENTE
+create or replace procedure prc_listar_materiales_capacitacion(material_solicitado out SYS_REFCURSOR)
+is
+
+begin
+open material_solicitado for  
+select * from material_solicitado  left join capacitacion on material_solicitado.id=capacitacion.id_materialsolicitado_id where capacitacion.id_materialsolicitado_id is null;
+end;
+
+
+
+--
+--Lista tipos de ACCIDENTE
+--0 ID
+--1 DESCRIPCION
 create or replace procedure prc_listar_tipo_accidente(accidente out SYS_REFCURSOR)
 is
 
 begin
-open accidente for  select * from tipo_accidente;
+open accidente for  select id,descripcion from tipo_accidente;
 end;
 
 
 
-
-##
+--INSERTA EN LA TABLA ACCIDENTE
 create or replace procedure prc_insertar_accidente(
     v_fecha               date,
     v_tipo_accidente      number
@@ -227,15 +240,11 @@ create or replace procedure prc_insertar_accidente(
 begin
 
 insert into accidente   (fecha_accidente,id_tipo_accidente_id)
-VALUES (v_fecha,v_tipo_accidente); 
+VALUES                  (v_fecha,v_tipo_accidente); 
 commit;
-
-
-
 end;
 
-
-##
+--INSERTA LA DESCRIPCION LA TABLA TIPO_ACCIDENTE
 
 create or replace procedure prc_insertar_tipo_accidente(
     v_descripcion          varchar2
@@ -246,52 +255,54 @@ begin
 insert into tipo_accidente   (descripcion)
 VALUES (v_descripcion); 
 commit;
-
-
-
 end;
 
 
-##
 
+--lISTA LA TABLA ACCIDENTE
 create or replace procedure prc_listar_accidente(accidente out SYS_REFCURSOR)
 is
 
 begin
 open accidente for  select * from accidente ;
-
-
-
-
 end;
 
 
 
-
-
-##INSERT REGISTRO ACCIDENTADOs
-
+---Inserta en registro accidente
 create or replace procedure prc_insertar_registro_accidente(
-    v_accidente            number,
-    v_ruttrabajador     number
+v_gravedad            varchar2,
+v_idaccidenteid       number,
+v_ruttrabajadorid     number
+
+)is
+begin
+insert into registro_accidentados   (gravedad,id_accidente_id,RUT_TRABAJADOR_ID)
+VALUES                              (v_gravedad,v_idaccidenteid,v_ruttrabajadorid); 
+commit;
+end;
+
+
+
+--Insert Visita terreno
+
+
+create or replace procedure prc_insertar_visita_terreno(
+    v_fecha_visita           date,
+    v_rutcliente_id       number,
+    v_ruttrabajadorid     number
 
 )is
 begin
 
-insert into registro_accidentados   (id_accidente_id,RUT_TRABAJADOR_ID)
-VALUES (v_accidente,v_ruttrabajador); 
+insert into visita_terreno   (fecha_visita,rut_cliente_id,rut_trabajador_id)
+VALUES (v_fecha_visita,v_rutcliente_id,v_ruttrabajadorid); 
 commit;
 
 
 
 end;
-create or replace procedure prc_listar_accidente_registro(accidente out SYS_REFCURSOR)
-is
-
-begin
-open accidente for select * from accidente;
 
 
 
 
-end;

@@ -34,11 +34,20 @@
   <select name="id_material_id" id="id_material_id">
     <option value="">Seleccionar</option>
       {% for d in listar_materiales  %}
-      <option value="{{ d.0 }}">{{ d.1 }}{{ d.0 }}</option>
+      <option value="{{ d.0 }}"> {{ d.1 }}y id{{ d.0 }}</option>
       {% endfor %}
 
   </select>
   <br>
+  <br>
+  <label for="">Seleccion de material</label>
+  <select name="MATERIAL_CAPACITACION_ID" id="MATERIAL_CAPACITACION_ID">
+    <option value="">Seleccionar</option>
+      {% for f in listar_capacitaciones  %}
+      <option value="{{ f.0 }}"> {{ f.1 }}y id {{ f.0 }}</option>
+      {% endfor %}
+
+  </select>
   <br>
 
   <input type="submit" value="Guardar">

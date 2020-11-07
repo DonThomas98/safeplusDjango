@@ -27,23 +27,22 @@
 <form action="" method="POST">
   {% csrf_token %}
 
-  <label for="">Gravedad Accidente</label>
-  <input type="text" name="gravedad">
+  <label for="">fecha_visita</label>
+  <input type="date" name="fecha_visita">
   <br>
-
- <label for="">Seleccion id del accidente</label>
-  <select name="id_accidente_id" id="id_accidente_id">
+ <label for="">Seleccion id cliente</label>
+  <select name="rut_cliente_id" id="rut_cliente_id">
     <option value="">Seleccionar</option>
-      {% for d in listar_accidente  %}
-      <option value="{{ d.0 }}">{{ d.1 }} id {{ d.0 }} </option>
+      {% for d in listar_clientes2  %}
+      <option value="{{ d.0 }}">usuario {{ d.1 }} con id {{ d.0 }} </option>
       {% endfor %}
-
+<br>
   </select>
 
 <label for="">Seleccion tipo de accidente</label>
-  <select name="RUT_TRABAJADOR_ID" id="RUT_TRABAJADOR_ID">
+  <select name="rut_trabajador_id" id="rut_trabajador_id">
     <option value="">Seleccionar</option>
-      {% for f in listar_clientes2  %}
+      {% for f in listar_trabajadores_todos  %}
       <option value="{{ f.0 }}">id{{ f.0 }} y usuario {{ f.1 }}</option>
       {% endfor %}
 

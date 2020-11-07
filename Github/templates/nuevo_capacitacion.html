@@ -46,7 +46,7 @@
   <select name="rut_trabajador_id" id="rut_trabajador_id">
     <option value="">Seleccionar</option>
       {% for f in listar_trabajadores_todos  %}
-      <option value="{{ f.0 }}">{{ d.1 }}{{ f.0 }}</option>
+      <option value="{{ f.0 }}">{{ f.1 }}{{ f.0 }}</option>
       {% endfor %}
 
   </select>
