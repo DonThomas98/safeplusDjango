@@ -9,43 +9,56 @@
 {% endblock %}
 
  {% block contenido_izquierda %}
-<h2>Nuevo Trabajador</h2>
-<form action="" method="POST">
-{% csrf_token %}
-
-    <label for=""></label>
 
 
-</form>
+  <h2>Reporte de accidentes</h2>
 
+  <h2>RECUERDA QUE PUEDES SOLICITAR ASESORIA AL SUFRIR UN ACCIDENTE</h2>
+
+
+
+naturaleza,partes_accidentadas,fuente_accidente,fecha_accidente,rut_cliente_id
 
 
   {% endblock %}
 
  {% block contenido_derecha %}
 
+
 <form action="" method="POST">
   {% csrf_token %}
-  <label for="">Fecha accidente</label>
-  <input type="date" name="fecha_accidente">
+<label for="">Naturaleza del accidente</label>
+  <select name="naturaleza" id="naturaleza">
+    <option value="Laboral">Laboral</option> 
+    <option value="Camino al trabajo" selected>Camino al trabaj</option>
+    <option value="Sobreesfuerzo">Sobreesfuerzo</option>
+  </select>
   <br>
-  
 
-<label for="">Seleccion tipo de accidente</label>
-  <select name="ID_TIPO_ACCIDENTE_ID" id="ID_TIPO_ACCIDENTE_ID">
+  <label for="">Partes accidentadas</label>
+  <input type="text" name="partes_accidentadas">
+<br>
+
+<label for="">Fuente Accidente</label>
+<input type="text" name="fuente_accidente">
+<br>
+
+<label for=""></label>
+<input type="date" name="fecha_accidente">
+
+<br>
+  <select name="rut_cliente_id" id="rut_cliente_id">
     <option value="">Seleccionar</option>
-      {% for d in listar_accidentes  %}
+      {% for d in listado_clientes_extendidos  %}
       <option value="{{ d.0 }}">{{ d.1 }}</option>
       {% endfor %}
 
   </select>
 
-  <br>
-
-  <br>
-
   <input type="submit" value="Guardar">
   </form>
+{{mensaje}}
+
 
 
 

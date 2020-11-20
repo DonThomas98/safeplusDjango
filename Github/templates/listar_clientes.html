@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Safeplus Inicio{% endblock %}
+
+{% block login %}
+
+
+
+{% endblock %}
+
+ {% block contenido_izquierda %}
+
+
+
+      {% for d in listado_accidentes_por_id  %}
+      
+      <h1> {{ d.0 }}{{ d.1 }}{{ d.2 }}</h1>
+
+
+      {% endfor %}
+
+  {% endblock %}
+
+ {% block contenido_derecha %}
+
+
+
+
+
+
+
+  {% endblock contenido_derecha%}
+
+
+
+{% block content %}
+
+{% endblock %}

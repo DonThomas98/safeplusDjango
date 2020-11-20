@@ -9,7 +9,7 @@
 {% endblock %}
 
  {% block contenido_izquierda %}
-<h2>Nuevo Material para capacitaciones</h2>
+<h2>Nuevo Trabajador</h2>
 <form action="" method="POST">
 {% csrf_token %}
 
@@ -26,14 +26,30 @@
          <form action="" method="POST">
 {% csrf_token %}
 
-<label for="">material</label>
-<input type="text" name="material">
-
+<label for="">Usuario</label>
+<br>
+<input type="text" name="USERNAME">
+<br>
+<label for="">Contraseña</label>
+<br>
+<input type="password" name="PASSWORD">
+<br>
+<label for="">Nombres</label>
+<br>
+<input type="text" name="FIRST_NAME">
+<br>
+<label for="">Apellidos</label>
+<br>
+<input type="text"  name="LAST_NAME">
+<br>
+<label for="">Correo</label>
+<br>
+<input type="text" name="EMAIL">
 <br>
 <input type="submit" value="Guardar">
 </form>
 
-
+{{mensaje}}
 
 
   {% endblock contenido_derecha%}

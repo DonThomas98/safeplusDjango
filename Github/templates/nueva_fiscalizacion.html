@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Safeplus Inicio{% endblock %}
+
+{% block login %}
+
+
+
+{% endblock %}
+
+ {% block contenido_izquierda %}
+
+
+  <h2>Reporte de fiscalizaciones</h2>
+
+  <h2>A</h2>
+
+
+
+
+doc_revisados,descripcion_documento,documento,rut_cliente_id
+  {% endblock %}
+
+ {% block contenido_derecha %}
+
+<form action="" method="POST">
+  {% csrf_token %}
+<label for="">doc_revisados</label>
+  <br>
+  <input type="text" name="doc_revisados">
+
+<br>
+  <label for="">descripcion_documento</label>
+  <br>
+  <input type="text" name="descripcion_documento">
+<br>
+<br>
+<label for="">Adjuntar Documento/s</label>
+<br>
+<input type="text" name="documento" >
+<br>
+
+
+
+
+  <input type="text" name="rut_cliente_id" value="{{ user.id }}" readonly hidden>
+
+
+
+<br>
+<br>
+  <input type="submit" value="Guardar">
+  </form>
+{{mensaje}}
+
+
+
+
+  {% endblock contenido_derecha%}
+
+{% block content %}
+
+{% endblock %}

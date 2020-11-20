@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Safeplus Inicio{% endblock %}
+
+{% block login %}
+
+
+
+{% endblock %}
+
+ {% block contenido_izquierda %}
+<h2>Nuevo Material para capacitaciones</h2>
+
+
+
+<table style="border-style: solid;">
+<tr>
+  <th>Materiales ya registrados</th>
+</tr>
+
+{% for p in listado_materiales %}
+<tr>
+  <td style="border-style: outset ; border-color: #6699ff;">{{ p.1 }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+<br>
+<div>Recuerde revisar si su material ya esta en la base de datos</div>
+<br>
+  {% endblock %}
+
+ {% block contenido_derecha %}
+         <form action="" method="POST">
+{% csrf_token %}
+
+<h2>MATERIAL A AGREGAR</h2>
+<label for="">MATERIAL NUEVO</label>
+<input type="text" name="material">
+
+<br>
+<input type="submit" value="Guardar">
+</form>
+
+
+{{mensaje}}
+
+  {% endblock contenido_derecha%}
+
+{% block content %}
+
+{% endblock %}

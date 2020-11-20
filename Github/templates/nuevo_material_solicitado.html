@@ -9,7 +9,7 @@
 {% endblock %}
 
  {% block contenido_izquierda %}
-<h2>Nuevos datos del Trabajador</h2>
+<h2>Vincule los materiales a la capacitacion</h2>
 <form action="" method="POST">
 {% csrf_token %}
 
@@ -27,23 +27,24 @@
 <form action="" method="POST">
   {% csrf_token %}
  
-  <label for="">cantidad</label>
-  <input type="number" name="cantidad">
-  <br>
   <label for="">Seleccion de material</label>
-  <select name="id_material_id" id="id_material_id">
+  <select name="id_material" id="id_material">
     <option value="">Seleccionar</option>
-      {% for d in listar_materiales  %}
+      {% for d in listado_materiales  %}
       <option value="{{ d.0 }}"> {{ d.1 }}y id{{ d.0 }}</option>
       {% endfor %}
 
   </select>
+  
+  <label for="">cantidad</label>
+  <input type="number" name="cantidad">
   <br>
   <br>
-  <label for="">Seleccion de material</label>
-  <select name="MATERIAL_CAPACITACION_ID" id="MATERIAL_CAPACITACION_ID">
+  <br>
+  <label for="">Seleccione su capacitacion</label>
+  <select name="material_capacitacion_id" id="material_capacitacion_id">
     <option value="">Seleccionar</option>
-      {% for f in listar_capacitaciones  %}
+      {% for f in listado_capacitaciones  %}
       <option value="{{ f.0 }}"> {{ f.1 }}y id {{ f.0 }}</option>
       {% endfor %}
 
@@ -53,7 +54,7 @@
   <input type="submit" value="Guardar">
   </form>
 
-
+{{mensaje}}
 
   {% endblock contenido_derecha%}
 

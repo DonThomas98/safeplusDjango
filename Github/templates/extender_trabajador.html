@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Safeplus Inicio{% endblock %}
+
+{% block login %}
+
+
+
+{% endblock %}
+
+ {% block contenido_izquierda %}
+<h2>EXTENSION DATOS TRABAJADOR</h2>
+<form action="" method="POST">
+{% csrf_token %}
+
+    <label for=""></label>
+
+
+</form>
+
+
+
+  {% endblock %}
+
+ {% block contenido_derecha %}
+
+
+
+
+
+
+  <form action="" method="POST">
+    {% csrf_token %}
+    <label for="">Rut</label>
+    <br>
+    <input type="number" name="rut">
+    <br>
+    
+    <label for="">Sueldo</label>
+    <br>
+    <input type="number" name="sueldo">
+    <br>
+    <label for="">Edad</label>
+    <br>
+    <input type="number" name="edad">
+    <br>
+    <label for="">Seleccion de trabajador</label>
+    <br>
+    <select name="user_id" id="user_id">
+      <option value="">Seleccionar</option>
+        {% for d in listado_trabajadores  %}
+        <option value="{{ d.0 }}">{{ d.1 }}</option>
+        {% endfor %}
+  
+    </select>
+    <br>
+    <br>
+  
+    <input type="submit" value="Guardar">
+    </form>
+
+
+
+
+
+
+
+  {% endblock contenido_derecha%}
+
+{% block content %}
+
+{% endblock %}

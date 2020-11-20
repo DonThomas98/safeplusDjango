@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Safeplus Inicio{% endblock %}
+
+{% block login %}
+
+
+
+{% endblock %}
+
+ {% block contenido_izquierda %}
+
+
+  <h2>Nueva Capacitacion</h2>
+
+  <h2>RECUERDA QUE LAS CAPACITACIONES SOLICITADAS HOY , SE PROGRAMAN PARA 15 DIAS EN EL FUTURO</h2>
+
+
+
+
+
+
+  {% endblock %}
+
+ {% block contenido_derecha %}
+
+
+<form style="" action="" method="POST">
+  {% csrf_token %}
+
+<label for="">Hora de la capacitacion</label>
+<br>
+<select name="HORA_CAPACITACION" id="HORA_CAPACITACION">
+  <option value="10 AM">10 AM</option>
+  <option value="11 AM">11 AM</option>
+  <option value="12 PM">12 PM</option>
+  <option value="1 PM">1 PM</option>
+  <option value="2 PM">2 PM</option>
+</select>
+<br>
+
+<label for="">Seleccion Cliente</label>
+<br>
+  <select name="RUT_CLIENTE_ID" id="RUT_CLIENTE_ID">
+    <option value="">Seleccionar</option>
+      {% for d in listado_clientes_extendidos  %}
+      <option value="{{ d.0 }}">{{ d.1 }}</option>
+      {% endfor %}
+
+  </select>
+
+  <br>
+    <label for="">Seleccion del trabajador</label>
+  <br>
+  <select name="RUT_TRABAJADOR_ID" id="RUT_TRABAJADOR_ID">
+    <option value="">Seleccionar</option>
+      {% for f in listado_trabajadores_extendidos  %}
+      <option value="{{ f.0 }}">{{ f.1 }}{{ f.0 }}</option>
+      {% endfor %}
+
+  </select>
+  <br>
+
+  <input type="submit" value="Guardar">
+  </form>
+{{mensaje}}
+
+
+
+
+  {% endblock contenido_derecha%}
+
+{% block content %}
+
+{% endblock %}

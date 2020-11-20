@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear_cliente{% endblock %}
+
+{% block login %}
+
+
+
+{% endblock %}
+
+
+{% block contenido_mediano%}
+         
+       <form action="" method="POST">
+{% csrf_token %}
+<label for="">Nombre de usuario</label>
+<br>
+<input type="text" name="USERNAME">
+<br>
+
+<label for="">Contraseña</label>
+<br>
+<input type="password" name="PASSWORD">
+<br>
+<label for="">Nombres</label>
+<br>
+<input type="text" name="FIRST_NAME">
+<br>
+<label for="">Apellidos</label>
+<br>
+<input type="text"  name="LAST_NAME">
+<br>
+<label for="">Correo</label>
+<br>
+<input type="text" name="EMAIL">
+<br>
+<input type="submit" value="Guardar">
+</form>
+
+
+{{ mensaje }}
+
+
+{% endblock %}
+
+
+
+
+
+
+
+ {% block contenido_izquierda %}
+
+  {% endblock %}
+
+ {% block contenido_derecha %}
+  
+
+
+  {% endblock contenido_derecha%}
+
+{% block content %}
+
+{% endblock %}

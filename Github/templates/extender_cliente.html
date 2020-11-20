@@ -9,7 +9,7 @@
 {% endblock %}
 
  {% block contenido_izquierda %}
-<h2>Nuevos datos del Trabajador</h2>
+<h2>EXTENSION DATOS CLIENTE</h2>
 <form action="" method="POST">
 {% csrf_token %}
 
@@ -24,23 +24,32 @@
 
  {% block contenido_derecha %}
 
+
+
+
+
 <form action="" method="POST">
   {% csrf_token %}
   <label for="">rut</label>
+  <br>
   <input type="number" name="rut">
   <br>
   
   <label for="">sueldo</label>
+  <br>
   <input type="number" name="sueldo">
   <br>
   <label for="">edad</label>
+  <br>
   <input type="number" name="edad">
   <br>
-  <label for="">Seleccion Trabajador</label>
-  <select name="userid" id="userid">
+  <label for="">Seleccion Cliente</label>
+  <br>
+  <select name="user_id" id="user_id">
+  <br>
     <option value="">Seleccionar</option>
-      {% for d in datostrabajadores  %}
-      <option value="{{ d.0 }}">{{ d.1 }}{{ d.0 }}</option>
+      {% for d in listado_clientes  %}
+      <option value="{{ d.0 }}">{{ d.1 }}</option>
       {% endfor %}
 
   </select>
@@ -49,6 +58,8 @@
 
   <input type="submit" value="Guardar">
   </form>
+
+
 
 
 

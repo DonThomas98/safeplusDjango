@@ -9,51 +9,92 @@
 {% endblock %}
 
  {% block contenido_izquierda %}
-         
+         <h3>Acciones Rapidas usuario {{ username }}</h3>
+         <div><a href="{% url 'logout' %} ">Creacion de usuario</a></div>
+         <div>Este es el primer 6  de la izquierda</div>
  {% if request.user.is_staff %}
- <table>
-
-  <tr>
-    <th>id</th>
-    <th>usuario</th>
-    <th>rut</th>
-
-  </tr>
-  {% for p in clientes %}
-    <tr>
-
-      <td>{{ p.0 }}</td>
-      <td>{{ p.4 }}</td>
-      <td>{{ p.11 }}</td>
-    </tr>
-    {% endfor %}
-
-</table>
-
 
  {% endif %}
+
+
+
 
 
   {% endblock %}
 
  {% block contenido_derecha %}
-<div class="col-xs-12 col-md-2 col-lg-2"><li><a href="{% url 'crear_clientes' %}">Crear Cliente</a></li></div>
-<div class="col-xs-12 col-md-2 col-lg-2"><li><a href="{% url 'crear_datos_clientes' %}">Agregar Datos Cliente</a></li></div>
-<div class="col-xs-12 col-md-2 col-lg-2"><li><a href="{% url 'crear_trabajadores' %}">Crear Trabajador</a></li></div>
-<div class="col-xs-12 col-md-2 col-lg-2"><li><a href="{% url 'Crear_datos_trabajadores' %}">Agregar datos a trabajador</a></li></div>
-<div class="col-xs-12 col-md-2 col-lg-2"><li><a href="{% url 'Crear_materiales_capacitacion' %}">Crear materiales </a></li></div>
-<div class="col-xs-12 col-md-2 col-lg-2"><li><a href="{% url 'Crear_datos_materiales_solicitados' %}">Crear materiales solicitados </a></li></div>
-<div class="col-xs-12 col-md-2 col-lg-2"><li><a href="{% url 'Crear_capacitaciones' %}">Crear capacitaciones </a></li></div>
-<div class="col-xs-12 col-md-2 col-lg-2"><li><a href="{% url 'reportar_accidentes' %}">Reportar Accidentes </a></li></div>
-<div class="col-xs-12 col-md-2 col-lg-2"><li><a href="{% url 'reportar_tipo_accidentes' %}">Reportar tipo accidente </a></li></div>
-<div class="col-xs-12 col-md-2 col-lg-2"><li><a href="{% url 'Crear_registro_accidente' %}">Reportar registro accidente </a></li></div>
-<div class="col-xs-12 col-md-2 col-lg-2"><li><a href="{% url 'registrar_visita_terreno' %}">Reportar visita terreno </a></li></div>
+ {{mensaje}}
+
+ESTE ESPACIO DE LA PANTALLA OCUPA 6 EN LG Y 12 EN XS
+
+
+
+
+{% if request.user.is_staff   is not True  and request.user.is_active is True  %}
+
+<p>ESTO SOLO PODRAS VERLO SI EL USUARIO ES CLIENTE</p>
+<br>
+<a href=" {% url 'crear_cliente' %}">crear_cliente</a>
+<br>
+<a href=" {% url 'extender_cliente' %}">extender_cliente</a>
+<br>
+<a href=" {% url 'crear_trabajador' %}">crear_trabajador</a>
+<br>
+<a href=" {% url 'extender_trabajador' %}">extender_trabajador</a>
+
+
+<br>
+<a href=" {% url 'nuevos_materiales' %}">nuevos_materiales</a>
+
+
+<br>
+<a href=" {% url 'nuevos_materiales_solicitados' %}">nuevos_materiales_solicitados</a>
+
+
+<br>
+<a href=" {% url 'nueva_fiscalizacion' %}">nueva_fiscalizacion</a>
+
+
+
+
+<br>
+<a href=" {% url 'nuevo_accidente' %}">nuevo_accidente</a>
+
+
+
+<br>
+<a href=" {% url 'nueva_fiscalizacion' %}">nueva_fiscalizacion</a>
+
+
+<br>
+
+{% endif %}
 
 
 
 
 
+    {% if request.user.is_staff %}
+<p>SI el usuario es staff debera poder ver esto</p>
+<br>
+<a href=" {% url 'nueva_capacitacion' %}">nueva_capacitacion</a>
 
+<br>
+<a href=" {% url 'nueva_visita_rutinaria' %}">nueva_visita_rutinaria</a>
+
+<br>
+<a href=" {% url 'nueva_asesoria_accidente' %}">nueva_asesoria_accidente</a>
+
+
+<br>
+<a href=" {% url 'nueva_asesoria_fiscalizaciones' %}">nueva_asesoria_fiscalizaciones</a>
+
+
+
+<br><a href=" {% url 'ver_clientes' %}">ver_clientes</a>
+
+
+    {% endif %}
 
 
 

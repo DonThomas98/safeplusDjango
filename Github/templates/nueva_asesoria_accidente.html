@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Safeplus Inicio{% endblock %}
+
+{% block login %}
+
+
+
+{% endblock %}
+
+ {% block contenido_izquierda %}
+
+
+  <h2>Nueva ASESORIA</h2>
+
+  <h2>RECUERDE QUE ESTA ASESORIA ESTA CUBIERTA </h2>
+
+
+
+
+
+
+  {% endblock %}
+
+ {% block contenido_derecha %}
+
+
+<form style="" action="" method="POST">
+  {% csrf_token %}
+
+<label for="">Propuesta al cliente</label>
+<br>
+<input type="text" name="propuesta" id="propuesta">
+
+<br>
+<label for="">Seleccione el accidente </label>
+<br>
+  <select name="id_accidente_id" id="id_accidente_id">
+    <option value="">Seleccionar</option>
+      {% for d in listado_accidentes  %}
+      <option value="{{ d.0 }}">{{ d.1 }} </option>
+      {% endfor %}
+
+  </select>
+
+  <br>
+    <label for="">Seleccion del trabajador</label>
+  <br>
+
+
+  <input type="submit" value="Guardar">
+  </form>
+{{mensaje}}
+
+
+
+
+  {% endblock contenido_derecha%}
+
+{% block content %}
+
+{% endblock %}
