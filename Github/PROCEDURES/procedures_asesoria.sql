@@ -40,3 +40,16 @@ commit;
 
 end;
 
+---LISTA LAS ASESORIAS DE ACUERDO A UNA ID DE UN ACCIDENTE
+
+create or replace procedure prc_listar_asesorias_por_id_accidente(accidente_id out SYS_REFCURSOR,
+v_id_accidente number
+
+)
+is
+
+begin
+open accidente_id for  select * from asesoria where evento='Accidente' and id_accidente_id = v_id_accidente;
+
+end;
+

@@ -10,14 +10,76 @@
 
  {% block contenido_izquierda %}
 
+ <form action="" method="POST">
+  {% csrf_token %}
 
-
-      {% for d in listado_accidentes_por_id  %}
-      
-      <h1> {{ d.0 }}{{ d.1 }}{{ d.2 }}</h1>
-
-
+<label for="">Selecione el cliente a revisar</label>
+<br>
+  <select name="rut_cliente_id" id="rut_cliente_id" onchange="cambiar_accidente()">
+    <option value="">Seleccionar</option>
+      {% for d in listado_clientes_extendidos  %}
+      <option value="{{ d.0 }}">{{ d.1 }}</option>
       {% endfor %}
+
+  </select>
+
+<br>
+
+
+  <label for="">ACCIDENTES DEL CLIENTE</label>
+  <br>
+  <select name="id_cliente" id="id_cliente" onchange="cambiar_asesoria()">
+    <option value="">Aun no selecciona ningun Cliente</option>
+
+  </select>
+
+<br>
+  <label for="">ASESORIAS RELACIONADAS AL ACCIDENTE</label>
+<br>
+  <select name="id_accidente_id" id="id_accidente_id">
+    <option value="">No tiene ninguna asesoria </option>
+
+
+  </select>
+  
+  <input type="submit" value="Guardar">
+
+</form>
+
+
+<script>
+  function cambiar_accidente(){
+
+    let id_cliente = document.getElementById("rut_cliente_id").value;
+    let url='ver_accidentes_cliente_por_id?id_cliente='+id_cliente;
+    fetch (url)
+    .then(function(result){
+      return result.text();
+    })
+    .then(function(result){
+
+      document.getElementById('id_cliente').innerHTML=result;
+    })
+  }
+
+
+  function cambiar_asesoria(){
+
+    let id_accidente = document.getElementById("id_cliente").value;
+    let url = 'asesoria_id?id_accidente_id='+id_accidente;
+    fetch(url)
+    .then(function(result){
+      
+      return result.text();
+    })
+    .then(function(result){
+      document.getElementById('id_accidente_id').innerHTML=result;
+
+
+    })
+  }
+
+</script>
 
   {% endblock %}
 

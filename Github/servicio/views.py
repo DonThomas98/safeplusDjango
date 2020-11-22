@@ -11,7 +11,7 @@ def Home(request):
 
     }
 
-    data['mensaje'] = print(listado_accidentes_por_id(21))
+    #data['mensaje'] = print(listado_accidentes_por_id(21))
 
     
     return render(request,'home.html')
@@ -106,8 +106,25 @@ def ver_accidentes_cliente_por_id(request):
     #data['mensaje'] = print(listado_accidentes_por_id(21))
 
     
-    return render(request,'listar_clientes.html',data)
+    return render(request,'accidentes_por_id.html',data)
 
+
+
+def listado_clientes_con_modulos(request):
+    id_cliente = request.GET.get('id_cliente')
+    id_accidente_id = request.GET.get('id_accidente_id')
+
+
+    data= {
+        "listado_accidentes_por_id":listado_accidentes_por_id(id_cliente),
+        "listado_clientes_extendidos":listado_clientes_extendidos(),
+        "listado_asesorias_por_id_accidente":listado_asesorias_por_id_accidente(id_accidente_id)
+    }
+
+    data['mensaje'] = print(listado_asesorias_por_id_accidente(21))
+
+    
+    return render(request,'listar_clientes.html',data)
 ##############################################################################################################
 
 
@@ -536,6 +553,31 @@ def nueva_asesoria_accidente (request):
             data['mensaje'] = 'No se pudo ingresar la asesoria'
     return render (request,'nueva_asesoria_accidente.html',data)
 
+
+def listado_asesorias_por_id_accidente(id_accidente_id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur=django_cursor.connection.cursor()
+
+    cursor.callproc("prc_listar_asesorias_por_id_accidente",[out_cur,id_accidente_id])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
+
+
+def ver_asesorias_por_id_accidente(request):
+    id_accidente_id = request.GET.get('id_accidente_id')
+    data= {
+        "listado_asesorias_por_id_accidente":listado_asesorias_por_id_accidente(id_accidente_id)
+    }
+
+    #data['mensaje'] = print(listado_accidentes_por_id(21))
+
+    
+    return render(request,'asesoria_por_id_accidente.html',data)
 
 ##################### VISTAS  CREAR CASO ASESORIA  FISCALIZACION,  CASO USO 7     #############################
 ##########################################################################

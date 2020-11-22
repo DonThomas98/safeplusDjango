@@ -1,0 +1,13 @@
+
+
+
+{% if listado_asesorias_por_id_accidente %}
+{% for y in listado_asesorias_por_id_accidente %}
+
+<option value="{{ y.0 }}">Se asesora un/a {{ y.1 }} con la propuesta de {{ y.2 }} </option>
+
+{% endfor %}
+
+{% else %}
+No existen asesorias registradas para este accidente
+{% endif %}

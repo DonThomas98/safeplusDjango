@@ -1,0 +1,6 @@
+
+{% for i in listado_accidentes_por_id %}
+
+<option value="{{ i.0 }}">Accidente {{ i.1 }} en {{ i.2 }} con motivo de {{ i.3 }} y fecha {{ i.4 }} </option>
+
+{% endfor %}
