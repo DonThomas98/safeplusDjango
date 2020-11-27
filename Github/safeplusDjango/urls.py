@@ -16,10 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from django.views.generic.base import TemplateView 
+from api.api import UserAPI
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('servicio.urls'),),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('api/1.0/create_user', UserAPI.as_view(),name="api_create_user")
+
+
   ##  path('', TemplateView.as_view(template_name='home.html'), name='home'), 
     
 ]
