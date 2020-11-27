@@ -5,7 +5,6 @@ import cx_Oracle
 from datetime import datetime
 from django.utils import timezone
 from django.shortcuts import redirect 
-
 def Home(request):
     data= {
 
@@ -110,21 +109,7 @@ def ver_accidentes_cliente_por_id(request):
 
 
 
-def listado_clientes_con_modulos(request):
-    id_cliente = request.GET.get('id_cliente')
-    id_accidente_id = request.GET.get('id_accidente_id')
 
-
-    data= {
-        "listado_accidentes_por_id":listado_accidentes_por_id(id_cliente),
-        "listado_clientes_extendidos":listado_clientes_extendidos(),
-        "listado_asesorias_por_id_accidente":listado_asesorias_por_id_accidente(id_accidente_id)
-    }
-
-    data['mensaje'] = print(listado_asesorias_por_id_accidente(21))
-
-    
-    return render(request,'listar_clientes.html',data)
 ##############################################################################################################
 
 
@@ -272,7 +257,7 @@ def nueva_capacitacion (request):
 
         if salida==1:
             data['mensaje'] = 'La capacitacion fue agendada correctamente'
-
+            return redirect('nuevos_materiales_solicitados') #or return redirect('/some/url/')
         else:
             data['mensaje'] = 'No se pudo Agendar la capacitacion'
     return render (request,'nueva_capacitacion.html',data)
@@ -319,12 +304,12 @@ def listado_materiales():
 
 
 
-def listado_capacitaciones():
+def listado_capacitaciones(rut_trabajador_id):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     out_cur=django_cursor.connection.cursor()
 
-    cursor.callproc("prc_listar_capacitaciones",[out_cur])
+    cursor.callproc("prc_listar_capacitaciones",[out_cur,rut_trabajador_id])
 
     lista = []
     for fila in out_cur:
@@ -340,10 +325,10 @@ def agregar_materiales_solicitados(id_material,cantidad,material_capacitacion_id
     return salida.getvalue()
 
 def nuevos_materiales_solicitados(request):
-
+    username = request.user.id    
     data= {
         'listado_materiales':listado_materiales(),
-        'listado_capacitaciones':listado_capacitaciones(),
+        'listado_capacitaciones':listado_capacitaciones(username),
     }
 
     if request.method == "POST":
@@ -398,10 +383,36 @@ def nueva_visita_rutinaria (request):
             data['mensaje'] = 'No se pudo Agendar la visita'
     return render (request,'nuevo_visita_rutinaria.html',data)
 
+def listado_visitas_sin_extender(rut):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur=django_cursor.connection.cursor()
+    cursor.callproc("prc_listar_visitas_sin_extender",[out_cur,rut])
 
-##################### VISTAS REPORTAR ACCIDENTE CLIENTE ,  CASO USO 5     #############################
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
+
+##################### VISTAS REVISAR CLIENTE ,  CASO USO 5     #############################
 ##########################################################################
+##ESTA FUNCION LISTA LOS DISTINTOS ACCIDENTES-ASESORIAS QUE SE LE HAN REALIZADO A UN CLIENTE
+def listado_clientes_con_modulos(request):
+    id_cliente = request.GET.get('id_cliente')
+    id_accidente_id = request.GET.get('id_accidente_id')
 
+
+    data= {
+        "listado_accidentes_por_id":listado_accidentes_por_id(id_cliente),
+        "listado_clientes_extendidos":listado_clientes_extendidos(),
+        "listado_asesorias_por_id_accidente":listado_asesorias_por_id_accidente(id_accidente_id)
+    }
+
+    data['mensaje'] = print(listado_asesorias_por_id_accidente(21))
+
+    
+    return render(request,'listar_clientes.html',data)
 
 
 
@@ -616,3 +627,54 @@ def nueva_asesoria_fiscalizaciones (request):
 
 ##################### VISTAS  CREAR CASO REVISAR MEJORA ,  CASO USO 8   #############################
 ##########################################################################
+##FALTA QUE FILTRE LAS VISITAS POR LA ID DEL TRABAJADOR
+def agregar_informe_visita(introduccion,RESULTADOS_EVALUACION,AUTOEVALUACION,DOC_ACTUALIZADOS,REG_INTERNO,
+    DOC_SEREMI_TRABAJO,COPIA_DOCUMENTOS,INFORMA_RIESGOS,INFORMA_MEDIDAS,PROGRAMA_ORDEN,EXTINTORES,CAPACITACION_EXTINTOR,EPP_INVENTARIO,
+    EPP_CERTIFICADOS,ID_VISITA_ID ):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida= cursor.var(cx_Oracle.NUMBER)
+
+    cursor.callproc('prc_insertar_informe_visita',[introduccion,RESULTADOS_EVALUACION,AUTOEVALUACION,DOC_ACTUALIZADOS,REG_INTERNO,
+    DOC_SEREMI_TRABAJO,COPIA_DOCUMENTOS,INFORMA_RIESGOS,INFORMA_MEDIDAS,PROGRAMA_ORDEN,EXTINTORES,CAPACITACION_EXTINTOR,EPP_INVENTARIO,
+    EPP_CERTIFICADOS,ID_VISITA_ID,salida])
+
+
+    return salida.getvalue()
+
+
+def nuevo_informe_visita (request):
+    current_user = request.user
+    data= {
+        'listado_visitas_sin_extender':listado_visitas_sin_extender(current_user.id),
+
+    }
+
+    if request.method == "POST":
+        introduccion = request.POST.get('introduccion')
+        RESULTADOS_EVALUACION = request.POST.get('RESULTADOS_EVALUACION')
+        AUTOEVALUACION = request.POST.get('AUTOEVALUACION')
+        DOC_ACTUALIZADOS = request.POST.get('DOC_ACTUALIZADOS')
+        REG_INTERNO = request.POST.get('REG_INTERNO')
+        DOC_SEREMI_TRABAJO = request.POST.get('DOC_SEREMI_TRABAJO')
+        COPIA_DOCUMENTOS = request.POST.get('COPIA_DOCUMENTOS')
+        INFORMA_RIESGOS = request.POST.get('INFORMA_RIESGOS')
+        INFORMA_MEDIDAS = request.POST.get('INFORMA_MEDIDAS')
+        PROGRAMA_ORDEN = request.POST.get('PROGRAMA_ORDEN')
+        EXTINTORES = request.POST.get('EXTINTORES')
+        CAPACITACION_EXTINTOR = request.POST.get('CAPACITACION_EXTINTOR')
+        EPP_INVENTARIO = request.POST.get('EPP_INVENTARIO')
+        EPP_CERTIFICADOS = request.POST.get('EPP_CERTIFICADOS')
+        ID_VISITA_ID = request.POST.get('ID_VISITA_ID')
+
+        salida=agregar_informe_visita(introduccion,RESULTADOS_EVALUACION,AUTOEVALUACION,DOC_ACTUALIZADOS,REG_INTERNO,
+        DOC_SEREMI_TRABAJO,COPIA_DOCUMENTOS,INFORMA_RIESGOS,INFORMA_MEDIDAS,PROGRAMA_ORDEN,EXTINTORES,CAPACITACION_EXTINTOR,EPP_INVENTARIO,
+        EPP_CERTIFICADOS,ID_VISITA_ID)
+
+        if salida==1:
+            data['mensaje'] = 'Se ingreso exitosamente la asesoria '
+
+        else:
+            data['mensaje'] = 'No se pudo ingresar la asesoria'
+    return render (request,'nuevo_informe_visita.html',data)
+

@@ -28,12 +28,9 @@
 ESTE ESPACIO DE LA PANTALLA OCUPA 6 EN LG Y 12 EN XS
 
 
+{% if request.user.is_superuser %}
+<p>ESTO SOLO PODRAS VERLO SI EL USUARIO ES ADMIN</p>
 
-
-{% if request.user.is_staff   is not True  and request.user.is_active is True  %}
-
-<p>ESTO SOLO PODRAS VERLO SI EL USUARIO ES CLIENTE</p>
-<br>
 <a href=" {% url 'crear_cliente' %}">crear_cliente</a>
 <br>
 <a href=" {% url 'extender_cliente' %}">extender_cliente</a>
@@ -43,12 +40,14 @@ ESTE ESPACIO DE LA PANTALLA OCUPA 6 EN LG Y 12 EN XS
 <a href=" {% url 'extender_trabajador' %}">extender_trabajador</a>
 
 
-<br>
-<a href=" {% url 'nuevos_materiales' %}">nuevos_materiales</a>
+{% endif %}
 
 
+
+{% if request.user.is_staff   is not True  and request.user.is_active is True  %}
+
+<p>ESTO SOLO PODRAS VERLO SI EL USUARIO ES CLIENTE</p>
 <br>
-<a href=" {% url 'nuevos_materiales_solicitados' %}">nuevos_materiales_solicitados</a>
 
 
 <br>
@@ -76,6 +75,17 @@ ESTE ESPACIO DE LA PANTALLA OCUPA 6 EN LG Y 12 EN XS
 
     {% if request.user.is_staff %}
 <p>SI el usuario es staff debera poder ver esto</p>
+
+
+
+<br>
+<a href=" {% url 'nuevos_materiales' %}">nuevos_materiales</a>
+
+
+<br>
+<a href=" {% url 'nuevos_materiales_solicitados' %}">nuevos_materiales_solicitados</a>
+
+
 <br>
 <a href=" {% url 'nueva_capacitacion' %}">nueva_capacitacion</a>
 
@@ -92,6 +102,8 @@ ESTE ESPACIO DE LA PANTALLA OCUPA 6 EN LG Y 12 EN XS
 
 
 <br><a href=" {% url 'listado_clientes_con_modulos' %}">listado_clientes_con_modulos</a>
+
+<br><a href=" {% url 'nuevo_informe_visita' %}">nuevo_informe_visita</a>
 
 
     {% endif %}

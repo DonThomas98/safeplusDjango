@@ -21,6 +21,7 @@ urlpatterns = [
     path('ver_accidentes_cliente_por_id', views.ver_accidentes_cliente_por_id, name='ver_accidentes_cliente_por_id'),##LISTA LOS ACCIDENTES DE UN CLIENTE AL PASARLE LA ID DE ESTE
     path('listado_clientes_con_modulos', views.listado_clientes_con_modulos, name='listado_clientes_con_modulos'),
     path('asesoria_id', views.ver_asesorias_por_id_accidente, name='ver_asesorias_por_id_accidente'),
+    path('nuevo_informe_visita', views.nuevo_informe_visita, name='nuevo_informe_visita'),
 
 
 

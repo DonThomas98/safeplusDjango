@@ -130,3 +130,22 @@ begin
 open clientes_datos for select * from capacitacion ORDER BY ID ASC ;
 
 end;
+
+
+
+---LISTAR LAS CAPACITACIONES QUE HACE X EMPLEADO EN UN PERIODO DE TIEMPO (FECHA ACTUAL Y LA FECHA A REALIZAR CAPACITACION) ESTO DEBIDO A QUE NO SE PODRA MODIFICAR EL MISMO DIA 
+create or replace procedure prc_listar_capacitaciones(clientes_datos out SYS_REFCURSOR,
+v_rut_trabajador number)
+is
+
+begin
+open clientes_datos for select capacitacion.id,capacitacion.fecha_solicitud,capacitacion.fecha_capacitacion,
+                        capacitacion.hora_capacitacion,capacitacion.rut_cliente_id,capacitacion.rut_trabajador_id,
+                        auth_user.username
+                        
+                        from capacitacion join auth_user
+                        on capacitacion.rut_cliente_id=auth_user.id
+                        where rut_trabajador_id=v_rut_trabajador AND capacitacion.fecha_capacitacion BETWEEN CURRENT_DATE AND fecha_capacitacion  ORDER BY ID ASC ;
+
+end;
+

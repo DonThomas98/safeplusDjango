@@ -13,7 +13,7 @@
 
   <h2>Nueva Capacitacion</h2>
 
-  <h2>RECUERDA QUE LAS CAPACITACIONES SOLICITADAS HOY , SE PROGRAMAN PARA 15 DIAS EN EL FUTURO</h2>
+  <h4>RECUERDA QUE LAS CAPACITACIONES SOLICITADAS HOY , SE PROGRAMAN PARA 15 DIAS EN EL FUTURO</h4>
 
 
 
@@ -50,15 +50,8 @@
   </select>
 
   <br>
-    <label for="">Seleccion del trabajador</label>
-  <br>
-  <select name="RUT_TRABAJADOR_ID" id="RUT_TRABAJADOR_ID">
-    <option value="">Seleccionar</option>
-      {% for f in listado_trabajadores_extendidos  %}
-      <option value="{{ f.0 }}">{{ f.1 }}{{ f.0 }}</option>
-      {% endfor %}
 
-  </select>
+  <input type="text" name="RUT_TRABAJADOR_ID" id="RUT_TRABAJADOR_ID" value="{{ user.id}}" hidden >
   <br>
 
   <input type="submit" value="Guardar">

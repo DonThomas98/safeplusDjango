@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+
+{% block title %}Safeplus Inicio{% endblock %}
+
+{% block login %}
+
+
+
+{% endblock %}
+
+ {% block contenido_izquierda %}
+<h2>INFORME DE AAAAAAAAAAAAAAAAAA</h2>
+<form action="" method="POST">
+{% csrf_token %}
+
+    <label for=""></label>
+
+
+</form>
+
+
+
+  {% endblock %}
+
+ {% block contenido_derecha %}
+
+
+
+  <form action="" method="POST">
+    {% csrf_token %}
+
+    <label for="">Introduccion del informe:</label>
+    <br>
+    <input type="text" name="INTRODUCCION" id="INTRODUCCION">
+    <br>  
+    
+
+
+    <label for="">Resultados de la evaluacion</label>
+    <br>
+    <input type="text" name="RESULTADOS_EVALUACION" id="RESULTADOS_EVALUACION">
+    <br>
+
+
+    <label for="">Autoevaluación</label>
+    <br>
+    <select name="AUTOEVALUACION" id="AUTOEVALUACION">
+         <option value="1">Cumple</option> 
+         <option value="0" selected>No cumple</option>
+         <option value="n">No aplica</option> 
+
+    </select>
+<br>
+
+
+
+    <label for="">Tiene los documentos Actualizados </label>
+    <br>
+    <select name="DOC_ACTUALIZADOS" id="DOC_ACTUALIZADOS">
+        <option value="1">Cumple</option> 
+        <option value="0" selected>No cumple</option>
+        <option value="n">No aplica</option> 
+    </select>
+    <br>
+
+
+    <label for="">El cliente posee un reglamento </label>
+    <br>
+    <select name="REG_INTERNO" id="REG_INTERNO">
+        <option value="1">Cumple</option> 
+        <option value="0" selected>No cumple</option>
+        <option value="n">No aplica</option> 
+    </select>
+    <br>
+
+
+
+    <label for="">Tiene los documentos al dia con la seremi del trabajo</label>
+    <br>
+    <select name="DOC_SEREMI_TRABAJO" id="DOC_SEREMI_TRABAJO">
+        <option value="1">Cumple</option> 
+        <option value="0" selected>No cumple</option>
+        <option value="n">No aplica</option> 
+    </select>
+    <br>
+
+
+
+    <label for="">Empleados tienen una copia de la documentacion relevante</label>
+    <br>
+    <select name="COPIA_DOCUMENTOS" id="COPIA_DOCUMENTOS">
+        <option value="1">Cumple</option> 
+        <option value="0" selected>No cumple</option>
+        <option value="n">No aplica</option> 
+    </select>
+    <br>
+
+
+
+    <label for="">Si tiene riesgos asociados , explica a los trabajadores</label>
+    <br>
+    <select name="INFORMA_RIESGOS" id="INFORMA_RIESGOS">
+        <option value="1">Cumple</option> 
+        <option value="0" selected>No cumple</option>
+        <option value="n">No aplica</option> 
+    </select>
+    <br>
+
+
+
+    <label for="">Informa medidas de proteccion</label>
+    <br>
+    <select name="INFORMA_MEDIDAS" id="INFORMA_MEDIDAS">
+        <option value="1">Cumple</option> 
+        <option value="0" selected>No cumple</option>
+        <option value="n">No aplica</option> 
+    </select>
+    <br>
+
+
+    <label for="">Tiene un calendario de trabajo</label>
+    <br>
+    <select name="PROGRAMA_ORDEN" id="PROGRAMA_ORDEN">
+        <option value="1">Cumple</option> 
+        <option value="0" selected>No cumple</option>
+        <option value="n">No aplica</option> 
+    </select>
+    <br>
+
+
+    <label for="">Posee extintores</label>
+    <br>
+    <select name="EXTINTORES" id="EXTINTORES">
+        <option value="1">Cumple</option> 
+        <option value="0" selected>No cumple</option>
+        <option value="n">No aplica</option> 
+
+    </select>
+
+    <br>
+
+
+    <label for="">Posee empleados capacitados en el uso del extintor</label>
+    <br>
+    <select name="CAPACITACION_EXTINTOR" id="CAPACITACION_EXTINTOR">
+        <option value="1">Cumple</option> 
+        <option value="0" selected>No cumple</option>
+        <option value="n">No aplica</option> 
+
+    </select>
+
+    <br>
+    <label for="">Posee elementos de proteccion personal</label>
+    <br>
+    <select name="EPP_INVENTARIO" id="EPP_INVENTARIO">
+        <option value="1">Cumple</option> 
+        <option value="0" selected>No cumple</option>
+        <option value="n">No aplica</option> 
+
+    </select>
+
+    <br>
+
+    <label for="">Elementos de proteccion personal certificados</label>
+    <br>
+    <select name="EPP_CERTIFICADOS" id="EPP_CERTIFICADOS">
+        <option value="1">Cumple</option> 
+        <option value="0" selected>No cumple</option>
+        <option value="n">No aplica</option> 
+
+    </select>
+
+    <br>
+    <label for="">Seleccione la visita a informar</label>
+    <br>
+    <select name="ID_VISITA_ID" id="ID_VISITA_ID">
+      <option value="">Seleccionar</option>
+        {% for d in listado_visitas_sin_extender  %}
+        <option value="{{ d.0 }}">{{ d.1 }} </option>
+        {% endfor %}
+  
+    </select>
+
+  
+    <input type="submit" value="Guardar">
+    </form>
+
+{{mensaje}}
+
+
+
+
+
+  {% endblock contenido_derecha%}
+
+{% block content %}
+
+{% endblock %}
