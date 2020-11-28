@@ -7,6 +7,7 @@ class UserSerializer(serializers.Serializer):
     last_name  = serializers.CharField()
     username   = serializers.CharField()
     email      = serializers.EmailField()
+    is_staff   = serializers.IntegerField(max_value=None, min_value=None)
     password   = serializers.CharField()
 
 
@@ -16,6 +17,7 @@ class UserSerializer(serializers.Serializer):
         instance.last_name =validate_data.get('last_name')
         instance.username  =validate_data.get('username')
         instance.email     =validate_data.get('email')
+        instance.is_staff  =validate_data.get('is_staff')
         instance.set_password(validate_data.get('password'))
         instance.save()
         return instance
