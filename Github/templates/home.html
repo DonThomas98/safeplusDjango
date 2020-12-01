@@ -9,11 +9,28 @@
 {% endblock %}
 
  {% block contenido_izquierda %}
-         <h3>Acciones Rapidas usuario {{ username }}</h3>
-         <div><a href="{% url 'logout' %} ">Creacion de usuario</a></div>
-         <div>Este es el primer 6  de la izquierda</div>
- {% if request.user.is_staff %}
 
+
+ {% if request.user.is_staff is not True and request.user.is_active is True  %}
+
+<h4>Acciones rapidas para usuario Cliente:</h4>
+<div><a href=" {% url 'nuevo_accidente' %}">Reportar Accidente</a></div>
+
+<h5>Reportar Fiscalizacion</h5>
+
+ {% endif %}
+
+
+
+
+
+ {% if request.user.is_staff and request.user.is_active is True  %}
+
+ <h4>Acciones rapidas para usuario Trabajador:</h4>
+
+
+
+ 
  {% endif %}
 
 
@@ -51,7 +68,6 @@ ESTE ESPACIO DE LA PANTALLA OCUPA 6 EN LG Y 12 EN XS
 
 
 <br>
-<a href=" {% url 'nueva_fiscalizacion' %}">nueva_fiscalizacion</a>
 
 
 
