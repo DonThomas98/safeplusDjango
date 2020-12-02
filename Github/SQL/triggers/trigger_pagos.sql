@@ -6,8 +6,10 @@ for each row
 begin
     if  :NEW.is_staff=0 then
         insert into contrato (descripcion,costo,fecha_contratacion,rut_cliente_id) 
-                     values ('Plan Universal',150000,CURRENT_DATE,:NEW.id);
+                     values ('Plan Universal',150000,sysdate,:NEW.id);
+        prc_pagos_base();
     end if;
+
 
 end;
 

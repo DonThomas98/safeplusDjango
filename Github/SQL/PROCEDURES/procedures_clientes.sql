@@ -34,7 +34,7 @@ create or replace procedure prc_insertar_cliente(
 begin
 
     insert into auth_user  (USERNAME,IS_SUPERUSER,PASSWORD, FIRST_NAME, LAST_NAME,EMAIL,IS_STAFF,IS_ACTIVE,DATE_JOINED)
-    VALUES                  (v_usuario,0,v_pass, v_nombre, v_apellido, v_correo,0,1,CURRENT_DATE); 
+    VALUES                  (v_usuario,0,v_pass, v_nombre, v_apellido, v_correo,0,1,sysdate); 
     commit;
     v_salida:=1;
 
