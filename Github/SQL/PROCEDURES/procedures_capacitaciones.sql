@@ -9,7 +9,7 @@ create or replace procedure prc_insertar_capacitacion(
 begin
 
 insert into capacitacion (FECHA_SOLICITUD,FECHA_CAPACITACION,HORA_CAPACITACION,RUT_CLIENTE_ID,RUT_TRABAJADOR_ID)
-            values       (sysdate,sysdate+15,v_hora_capacitacion,v_rut_cliente,v_rut_trabajador);
+            values       (CURRENT_DATE,CURRENT_DATE+15,v_hora_capacitacion,v_rut_cliente,v_rut_trabajador);
 commit;
     v_salida:=1;
 
@@ -47,7 +47,7 @@ create or replace procedure prc_mostrar_dia_capacitacion(clientes_datos out SYS_
 is
 
 begin
-open clientes_datos for  select sysdate+15 from dual; 
+open clientes_datos for  select CURRENT_DATE+15 from dual; 
 
 end;
 
@@ -145,7 +145,7 @@ open clientes_datos for select capacitacion.id,capacitacion.fecha_solicitud,capa
                         
                         from capacitacion join auth_user
                         on capacitacion.rut_cliente_id=auth_user.id
-                        where rut_trabajador_id=v_rut_trabajador AND capacitacion.fecha_capacitacion BETWEEN sysdate AND fecha_capacitacion  ORDER BY ID ASC ;
+                        where rut_trabajador_id=v_rut_trabajador AND capacitacion.fecha_capacitacion BETWEEN CURRENT_DATE  AND fecha_capacitacion  ORDER BY ID ASC ;
 
 end;
 

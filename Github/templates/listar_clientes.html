@@ -15,6 +15,7 @@
 
 <label for="">Selecione el cliente a revisar</label>
 <br>
+
   <select name="rut_cliente_id" id="rut_cliente_id" onchange="cambiar_accidente()">
     <option value="">Seleccionar</option>
       {% for d in listado_clientes_extendidos  %}
@@ -25,14 +26,18 @@
 
 <br>
 
+<br>
 
   <label for="">ACCIDENTES DEL CLIENTE</label>
   <br>
+  
+<br>
   <select name="id_cliente" id="id_cliente" onchange="cambiar_asesoria()">
     <option value="">Aun no selecciona ningun Cliente</option>
 
   </select>
 
+<br>
 <br>
   <label for="">ASESORIAS RELACIONADAS AL ACCIDENTE</label>
 <br>

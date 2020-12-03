@@ -34,7 +34,7 @@ create or replace procedure prc_insertar_cliente(
 begin
 
     insert into auth_user  (USERNAME,IS_SUPERUSER,PASSWORD, FIRST_NAME, LAST_NAME,EMAIL,IS_STAFF,IS_ACTIVE,DATE_JOINED)
-    VALUES                  (v_usuario,0,v_pass, v_nombre, v_apellido, v_correo,0,1,sysdate); 
+    VALUES                  (v_usuario,0,v_pass, v_nombre, v_apellido, v_correo,0,1,CURRENT_DATE); 
     commit;
     v_salida:=1;
 
@@ -73,3 +73,41 @@ end;
 
 
 
+---PROCEDURE QUE INSERTA CLIENTE , PENSADO PARA .NET
+
+create or replace procedure prc_insertar_cliente_sin_salida(
+    v_usuario      varchar2,
+    v_pass         varchar2,
+    v_nombre       varchar2,
+    v_apellido     varchar2,
+    v_correo       varchar2
+
+)is
+begin
+
+    insert into auth_user  (USERNAME,IS_SUPERUSER,PASSWORD, FIRST_NAME, LAST_NAME,EMAIL,IS_STAFF,IS_ACTIVE,DATE_JOINED)
+    VALUES                  (v_usuario,0,v_pass, v_nombre, v_apellido, v_correo,0,1,CURRENT_DATE); 
+    commit;
+
+
+
+end;
+
+---PROCEDURE QUE EXTIENDE CLIENTE , PENSADO PARA .NET
+
+
+create or replace procedure prc_insertar_datos_cliente_sin_salida(
+    v_rut         number,
+    v_sueldo      number,
+    v_edad        number,
+    v_userid       number
+
+)is
+begin
+
+insert into account_userprofile  (rut,sueldo,edad, user_id)
+VALUES (v_rut,v_sueldo, v_edad, v_userid); 
+commit;
+ 
+
+end;

@@ -27,6 +27,17 @@
  {% if request.user.is_staff and request.user.is_active is True  %}
 
  <h4>Acciones rapidas para usuario Trabajador:</h4>
+<br>
+<a href=" {% url 'crear_trabajador' %}">VISTA CAPACITACIONES</a>
+<br>
+<br>
+<a href=" {% url 'crear_trabajador' %}">VISTA ASESORIAS</a>
+<br>
+<br>
+<a href=" {% url 'crear_trabajador' %}">VISTA VISITAS A TERRENO</a>
+<br>
+<br>
+<a href=" {% url 'crear_trabajador' %}">VISTA REVISION DE CLIENTES</a>
 
 
 
