@@ -111,3 +111,39 @@ exception when others then
 
 
 end prc_pagos_base ;
+
+-----------
+
+create or replace procedure prc_listar_contratos_por_id_cliente(clientes_datos out SYS_REFCURSOR,
+v_rut_cliente_id number)
+is
+
+begin
+open clientes_datos for  select * from contrato
+                        where rut_cliente_id=v_rut_cliente_id;
+
+end;
+
+--PROCEDURE QUE INSERTA PAGOS
+
+
+create or replace procedure prc_insertar_pago(
+    v_monto   number,
+    v_fecha      date,
+    v_contrato number,
+    v_salida      out number
+
+
+)is
+begin
+
+  insert into registro_pagos ( monto_pago,fecha_pago,id_contrato_id) 
+                            values (v_monto,v_fecha,v_contrato);
+    commit;
+    v_salida:=1;
+
+
+    exception 
+    when others then 
+        v_salida:=0;
+end;

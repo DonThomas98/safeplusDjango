@@ -123,13 +123,7 @@ end;
 
 ---LISTA LAS CAPACITACIONES
 
-create or replace procedure prc_listar_capacitaciones(clientes_datos out SYS_REFCURSOR)
-is
 
-begin
-open clientes_datos for select * from capacitacion ORDER BY ID ASC ;
-
-end;
 
 
 

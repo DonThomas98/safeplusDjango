@@ -47,3 +47,16 @@ open clientes_datos for  select * from accidente where rut_cliente_id=v_rut_clie
 
 end;
 
+--------------
+create or replace procedure prc_listar_contratos_por_id_pagos(clientes_datos out SYS_REFCURSOR,
+v_rut_cliente_id number
+
+)
+is
+
+begin
+open clientes_datos for  select * from registro_pagos
+         join contrato
+         on registro_pagos.id_contrato_id=contrato.id
+         where contrato.rut_cliente_id=v_rut_cliente_id;
+end;

@@ -22,6 +22,7 @@ urlpatterns = [
     path('listado_clientes_con_modulos', views.listado_clientes_con_modulos, name='listado_clientes_con_modulos'),
     path('asesoria_id', views.ver_asesorias_por_id_accidente, name='ver_asesorias_por_id_accidente'),
     path('nuevo_informe_visita', views.nuevo_informe_visita, name='nuevo_informe_visita'),
+    path('nuevo_registro_pagos', views.nuevo_registro_pagos, name='nuevo_registro_pagos'),
 
 
 

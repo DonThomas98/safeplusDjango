@@ -51,13 +51,8 @@
   <br>
     <label for="">Seleccion del trabajador</label>
   <br>
-  <select name="rut_trabajador_id" id="rut_trabajador_id">
-    <option value="">Seleccionar</option>
-      {% for f in listado_trabajadores_extendidos  %}
-      <option value="{{ f.0 }}">{{ f.1 }}{{ f.0 }}</option>
-      {% endfor %}
 
-  </select>
+  <input type="text" name="rut_trabajador_id" id="rut_trabajador_id" value="{{ user.id}}" hidden >
   <br>
 
   <input type="submit" value="Guardar">

@@ -17,7 +17,6 @@
 
 
 
-naturaleza,partes_accidentadas,fuente_accidente,fecha_accidente,rut_cliente_id
 
 
   {% endblock %}
@@ -47,13 +46,8 @@ naturaleza,partes_accidentadas,fuente_accidente,fecha_accidente,rut_cliente_id
 <input type="date" name="fecha_accidente">
 
 <br>
-  <select name="rut_cliente_id" id="rut_cliente_id">
-    <option value="">Seleccionar</option>
-      {% for d in listado_clientes_extendidos  %}
-      <option value="{{ d.0 }}">{{ d.1 }}</option>
-      {% endfor %}
 
-  </select>
+  <input type="text" name="rut_cliente_id" id="rut_cliente_id" value="{{ user.id}}" hidden >
 
   <input type="submit" value="Guardar">
   </form>

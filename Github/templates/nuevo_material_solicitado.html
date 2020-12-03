@@ -45,7 +45,7 @@
   <select name="material_capacitacion_id" id="material_capacitacion_id">
     <option value="">Seleccionar</option>
       {% for f in listado_capacitaciones  %}
-      <option value="{{ f.0 }}"> {{ f.1 }}y id {{ f.0 }}</option>
+      <option value="{{ f.0 }}"> {{ f.6 }} con fecha {{ f.2 }} {{ f.3 }}</option>
       {% endfor %}
 
   </select>

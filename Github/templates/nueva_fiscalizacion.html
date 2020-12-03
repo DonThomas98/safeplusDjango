@@ -13,29 +13,26 @@
 
   <h2>Reporte de fiscalizaciones</h2>
 
-  <h2>A</h2>
+  <h2>Puede solicitar una asesoria especial al ser fiscalizado , se cubren 10 , luego de esto se pagara.</h2>
 
 
-
-
-doc_revisados,descripcion_documento,documento,rut_cliente_id
   {% endblock %}
 
  {% block contenido_derecha %}
 
 <form action="" method="POST">
   {% csrf_token %}
-<label for="">doc_revisados</label>
+<label for="">DOCUMENTOS REVISADOS</label>
   <br>
   <input type="text" name="doc_revisados">
 
 <br>
-  <label for="">descripcion_documento</label>
+  <label for="">Breve descripcion del/los documentos</label>
   <br>
   <input type="text" name="descripcion_documento">
 <br>
 <br>
-<label for="">Adjuntar Documento/s</label>
+<label for="">Documento/s que quedaron por revisar</label>
 <br>
 <input type="text" name="documento" >
 <br>

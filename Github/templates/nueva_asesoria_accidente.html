@@ -13,7 +13,7 @@
 
   <h2>Nueva ASESORIA</h2>
 
-  <h2>RECUERDE QUE ESTA ASESORIA ESTA CUBIERTA </h2>
+  <h2>RECUERDE QUE ESTA ASESORIA ESTA CUBIERTA Y NO TIENE COSTO ASOCIADO </h2>
 
 
 
@@ -38,7 +38,7 @@
   <select name="id_accidente_id" id="id_accidente_id">
     <option value="">Seleccionar</option>
       {% for d in listado_accidentes  %}
-      <option value="{{ d.0 }}">{{ d.1 }} </option>
+      <option value="{{ d.0 }}">{{ d.1 }} {{ d.3 }} </option>
       {% endfor %}
 
   </select>

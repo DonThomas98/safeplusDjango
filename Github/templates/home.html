@@ -16,7 +16,7 @@
 <h4>Acciones rapidas para usuario Cliente:</h4>
 <div><a href=" {% url 'nuevo_accidente' %}">Reportar Accidente</a></div>
 
-<h5>Reportar Fiscalizacion</h5>
+
 
  {% endif %}
 
@@ -28,19 +28,28 @@
 
  <h4>Acciones rapidas para usuario Trabajador:</h4>
 <br>
-<a href=" {% url 'crear_trabajador' %}">VISTA CAPACITACIONES</a>
-<br>
-<br>
-<a href=" {% url 'crear_trabajador' %}">VISTA ASESORIAS</a>
-<br>
-<br>
-<a href=" {% url 'crear_trabajador' %}">VISTA VISITAS A TERRENO</a>
-<br>
-<br>
-<a href=" {% url 'crear_trabajador' %}">VISTA REVISION DE CLIENTES</a>
 
+<h2>Vistas de capacitacion</h2>
 
+<a href=" {% url 'nuevos_materiales' %}">Nuevos materiales</a>
+<br>
+<a href=" {% url 'nueva_capacitacion' %}">Registrar Capacitación</a>
+<br>
+<a href=" {% url 'nuevos_materiales_solicitados' %}">Preparar Capacitacion</a>
 
+<br><br>
+
+<h2>Vistas de Asesoria</h2>
+
+<br>
+<a href=" {% url 'nueva_asesoria_accidente' %}">Asesoria Accidente</a>
+
+<br>
+<a href=" {% url 'nueva_asesoria_fiscalizaciones' %}">Asesoria Fiscalizaciones</a>
+
+<h2>Vistas de Visitas</h2>
+<br>
+<a href=" {% url 'nueva_visita_rutinaria' %}">Visita Rutinaria</a>
  
  {% endif %}
 
@@ -53,7 +62,7 @@
  {% block contenido_derecha %}
  {{mensaje}}
 
-ESTE ESPACIO DE LA PANTALLA OCUPA 6 EN LG Y 12 EN XS
+
 
 
 {% if request.user.is_superuser %}
@@ -74,21 +83,15 @@ ESTE ESPACIO DE LA PANTALLA OCUPA 6 EN LG Y 12 EN XS
 
 {% if request.user.is_staff   is not True  and request.user.is_active is True  %}
 
-<p>ESTO SOLO PODRAS VERLO SI EL USUARIO ES CLIENTE</p>
+<p>ACCIONES DISPONIBLES PARA EL CLIENTE</p>
 <br>
 
 
-<br>
-
-
-
-
-<br>
 <a href=" {% url 'nuevo_accidente' %}">nuevo_accidente</a>
 
 
 
-<br>
+<br><br>
 <a href=" {% url 'nueva_fiscalizacion' %}">nueva_fiscalizacion</a>
 
 
@@ -109,22 +112,15 @@ ESTE ESPACIO DE LA PANTALLA OCUPA 6 EN LG Y 12 EN XS
 <a href=" {% url 'nuevos_materiales' %}">nuevos_materiales</a>
 
 
-<br>
-<a href=" {% url 'nuevos_materiales_solicitados' %}">nuevos_materiales_solicitados</a>
 
 
-<br>
-<a href=" {% url 'nueva_capacitacion' %}">nueva_capacitacion</a>
-
-<br>
-<a href=" {% url 'nueva_visita_rutinaria' %}">nueva_visita_rutinaria</a>
-
-<br>
-<a href=" {% url 'nueva_asesoria_accidente' %}">nueva_asesoria_accidente</a>
 
 
-<br>
-<a href=" {% url 'nueva_asesoria_fiscalizaciones' %}">nueva_asesoria_fiscalizaciones</a>
+
+
+
+
+
 
 
 

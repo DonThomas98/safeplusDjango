@@ -257,7 +257,7 @@ def nueva_capacitacion (request):
 
         if salida==1:
             data['mensaje'] = 'La capacitacion fue agendada correctamente'
-            return redirect('nuevos_materiales_solicitados') #or return redirect('/some/url/')
+
         else:
             data['mensaje'] = 'No se pudo Agendar la capacitacion'
     return render (request,'nueva_capacitacion.html',data)
@@ -409,7 +409,7 @@ def listado_clientes_con_modulos(request):
         "listado_asesorias_por_id_accidente":listado_asesorias_por_id_accidente(id_accidente_id)
     }
 
-    data['mensaje'] = print(listado_asesorias_por_id_accidente(21))
+    
 
     
     return render(request,'listar_clientes.html',data)
@@ -677,4 +677,47 @@ def nuevo_informe_visita (request):
         else:
             data['mensaje'] = 'No se pudo ingresar la asesoria'
     return render (request,'nuevo_informe_visita.html',data)
+
+
+###CASO PAGOS
+
+
+
+def contratos_por_id_pago(v_rut_cliente_id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur=django_cursor.connection.cursor()
+
+    cursor.callproc("prc_listar_contratos_por_id_pagos",[out_cur,v_rut_cliente_id])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
+def agregar_pago_cliente(monto_pago,fecha_pago,id_contrato_id ):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida= cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc('prc_insertar_pago',[monto_pago,fecha_pago,id_contrato_id])
+    return salida.getvalue()
+
+
+def nuevo_registro_pagos(request):
+    current_user = request.user
+    usuario= current_user.id
+    data= {
+        'contratos_por_id_pago':contratos_por_id_pago(usuario),
+    }
+
+    if request.method == "POST":
+        monto_pago = request.POST.get('monto_pago')
+        fecha_pago = request.POST.get('fecha_pago')
+        id_contrato_id = request.POST.get('id_contrato_id')
+        
+
+
+        agregar_pago_cliente(monto_pago,fecha_pago,id_contrato_id)
+
+    return render (request,'nuevo_pago.html',data)
 

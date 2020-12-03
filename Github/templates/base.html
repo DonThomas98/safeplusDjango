@@ -21,7 +21,7 @@
           <div class="col-xs-12 col-md-2 col-lg-2"><li><a href="{% url 'home' %}">Inicio</a></li></div>
           <div class="col-xs-12 col-md-2 col-lg-2"><li><a href="#">Nosotros</a></li></div>
           <div class="col-xs-12 col-md-2 col-lg-2"><li><a href="#">Servicios</a></li></div>
-          <div class="col-xs-12 col-md-2 col-lg-2"><li><a href="#">Servicios</a></li></div>
+          <div class="col-xs-12 col-md-2 col-lg-2"><li><a href="{% url 'nuevo_registro_pagos' %}">Pagos</a></li></div>
           {% if user.is_authenticated %}
           <div class="col-xs-12 col-md-4 col-lg-4"><li><a href="{% url 'logout' %}">Cerrar Sesion , {{ user.username }}</a></li></div>
            {% else %}
