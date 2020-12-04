@@ -26,7 +26,7 @@
 
  {% if request.user.is_staff and request.user.is_active is True  %}
 
- <h4>Acciones rapidas para usuario Trabajador:</h4>
+ <h4>ACCIONES RAPIDAS PARA USUARIO TRABAJADOR:</h4>
 <br>
 
 <h2>Vistas de capacitacion</h2>
@@ -50,7 +50,9 @@
 <h2>Vistas de Visitas</h2>
 <br>
 <a href=" {% url 'nueva_visita_rutinaria' %}">Visita Rutinaria</a>
- 
+ <br>
+ <a href=" {% url 'nuevo_informe_visita' %}">Informe Visita</a>
+
  {% endif %}
 
 
@@ -103,30 +105,22 @@
 
 
 
-    {% if request.user.is_staff %}
-<p>SI el usuario es staff debera poder ver esto</p>
+    {% if request.user.is_staff and request.user.is_active is True  %}
+<p>Vista de carga laboral</p>
+      <label for="">CAPACITACIONES PARA ESTE MES</label>
+      <br><br>
+      {% for d in listado_capacitaciones_por_id  %}
+      <div>Capacitacion con fecha {{ d.1 }} a las {{ d.2 }}</div>
 
+      {% endfor %}
+  <br>
+      <label for="">Visitas PARA ESTE MES</label>
+      <br><br>
+      {% for e in listado_visitas_por_id  %}
+      <div>visita de tipo {{ e.2 }} de {{ e.0 }} con fecha {{ e.1 }} </div>
 
+      {% endfor %}
 
-<br>
-<a href=" {% url 'nuevos_materiales' %}">nuevos_materiales</a>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<br><a href=" {% url 'listado_clientes_con_modulos' %}">listado_clientes_con_modulos</a>
-
-<br><a href=" {% url 'nuevo_informe_visita' %}">nuevo_informe_visita</a>
 
 
     {% endif %}

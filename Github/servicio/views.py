@@ -6,14 +6,17 @@ from datetime import datetime
 from django.utils import timezone
 from django.shortcuts import redirect 
 def Home(request):
+    current_user = request.user
+    usuario= current_user.id
     data= {
-
+        "listado_capacitaciones_por_id":listado_capacitaciones_por_id(usuario),
+        "listado_visitas_por_id":listado_visitas_por_id(usuario),
     }
 
     #data['mensaje'] = print(listado_accidentes_por_id(21))
 
     
-    return render(request,'home.html')
+    return render(request,'home.html',data)
 
 
 
@@ -721,3 +724,41 @@ def nuevo_registro_pagos(request):
 
     return render (request,'nuevo_pago.html',data)
 
+
+###CASO CARGAS LABORALES DEL PROFESIONAL
+
+def listado_capacitaciones_por_id(v_rut_cliente_id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur=django_cursor.connection.cursor()
+
+    cursor.callproc("prc_listar_carga_capacitaciones",[out_cur,v_rut_cliente_id])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
+def listado_visitas_por_id(v_rut_cliente_id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur=django_cursor.connection.cursor()
+
+    cursor.callproc("prc_listar_carga_visitas",[out_cur,v_rut_cliente_id])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
+def ver_cargas_laborales(request):
+    current_user = request.user
+    usuario= current_user.id
+    data= {
+        "listado_capacitaciones_por_id":listado_capacitaciones_por_id(usuario),
+        "listado_visitas_por_id":listado_visitas_por_id(usuario),
+    }
+
+
+    
+    return render(request,'asesoria_por_id_accidente.html',data)
