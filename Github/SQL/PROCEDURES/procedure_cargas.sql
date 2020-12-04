@@ -6,7 +6,7 @@ is
 
 begin
 open clientes_datos for 
-select   username ,motivo_visita,fecha_visita from auth_user 
+select   username ,to_char(fecha_visita,'dd/mm/yyyy'),motivo_visita from auth_user 
         join visita_terreno 
         on auth_user.id=visita_terreno.rut_trabajador_id 
         where to_char(fecha_visita,'mm/yyyy')=to_char(CURRENT_DATE ,'mm/yyyy') 
@@ -14,6 +14,8 @@ select   username ,motivo_visita,fecha_visita from auth_user
         rut_trabajador_id=v_rut_cliente_id
         order by fecha_visita asc;
 end;
+
+
 
 ----LISTA LAS CAPACITACIONES Y SU DIA
 
@@ -26,7 +28,7 @@ is
 
 begin
 open clientes_datos for 
-select  username ,fecha_capacitacion,hora_capacitacion
+select  username ,to_char(fecha_capacitacion,'dd/mm/yyyy'),hora_capacitacion
         from auth_user 
         join capacitacion 
         on auth_user.id=capacitacion.rut_trabajador_id 
@@ -35,3 +37,4 @@ select  username ,fecha_capacitacion,hora_capacitacion
         rut_trabajador_id=v_rut_cliente_id
         order by fecha_capacitacion asc;
 end;
+
