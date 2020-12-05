@@ -14,8 +14,13 @@
   <h2>Ventana de pagos</h2>
 
   <h2>Solo debes pagar lo necesario del mes anterior para seguir siendo un cliente activo , no pagar el mes anterior hara que se corte el servicio el primer dia del mes siguiente</h2>
+  {% for f in listado_pago_mes_anterior  %}
+  
 
 
+  <h1>Debera pagar : {{ f.0 }} del mes anterior</h1>
+
+  {% endfor %}
 
 
 

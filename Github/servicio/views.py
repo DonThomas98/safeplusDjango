@@ -427,11 +427,11 @@ def nueva_visita_rutinaria (request):
             data['mensaje'] = 'No se pudo Agendar la visita'
     return render (request,'nuevo_visita_rutinaria.html',data)
 
-def listado_visitas_sin_extender(rut):
+def listado_visitas_sin_extender(rut_cliente):
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
     out_cur=django_cursor.connection.cursor()
-    cursor.callproc("prc_listar_visitas_sin_extender",[out_cur,rut])
+    cursor.callproc("prc_listar_visitas_sin_extender",[out_cur,rut_cliente])
 
     lista = []
     for fila in out_cur:
@@ -700,8 +700,9 @@ def agregar_informe_visita(introduccion,RESULTADOS_EVALUACION,AUTOEVALUACION,DOC
 
 def nuevo_informe_visita (request):
     current_user = request.user
+    rut= current_user.id
     data= {
-        'listado_visitas_sin_extender':listado_visitas_sin_extender(current_user.id),
+        'listado_visitas_sin_extender':listado_visitas_sin_extender(rut),
 
     }
 
@@ -763,6 +764,7 @@ def nuevo_registro_pagos(request):
     usuario= current_user.id
     data= {
         'contratos_por_id_pago':contratos_por_id_pago(usuario),
+        'listado_pago_mes_anterior':listado_pago_mes_anterior(usuario),
     }
 
     if request.method == "POST":
@@ -775,6 +777,21 @@ def nuevo_registro_pagos(request):
         agregar_pago_cliente(monto_pago,fecha_pago,id_contrato_id)
 
     return render (request,'nuevo_pago.html',data)
+
+
+def listado_pago_mes_anterior(rut_cliente):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur=django_cursor.connection.cursor()
+    cursor.callproc("prc_listar_pago_mes_anterior",[out_cur,rut_cliente])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+    return lista
+
+
+
 
 
 ###CASO CARGAS LABORALES DEL PROFESIONAL

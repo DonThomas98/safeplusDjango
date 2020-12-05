@@ -26,7 +26,8 @@ end;
 
 ---LISTA LAS VISITAS QUE AUN NO TIENEN UN INFORME ASOCIADO
 
-create or replace procedure prc_listar_visitas_sin_extender(clientes_datos out SYS_REFCURSOR)
+create or replace procedure prc_listar_visitas_sin_extender(clientes_datos out SYS_REFCURSOR,
+v_rut varchar2)
 is
 
 begin
@@ -34,7 +35,8 @@ open clientes_datos for
 select visita_terreno.id,fecha_visita,motivo_visita,rut_cliente_id,rut_trabajador_id
 from visita_terreno left join informe_visita 
 on visita_terreno.id=informe_visita.id_visita_id
-where  informe_visita.id_visita_id is null;
-
+where  informe_visita.id_visita_id is null
+and rut_trabajador_id=v_rut;
 end;
+
 

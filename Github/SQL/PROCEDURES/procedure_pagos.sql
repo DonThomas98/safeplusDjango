@@ -147,3 +147,17 @@ begin
     when others then 
         v_salida:=0;
 end;
+
+--LISTA EL VALOR DE PAGO DEL MES ANTERIOR
+
+create or replace procedure prc_listar_pago_mes_anterior(clientes_datos out SYS_REFCURSOR,
+v_rut_cliente_id number
+
+)
+is
+
+begin
+open clientes_datos for select (fn_monto_pagado(v_rut_cliente_id)-(fn_montos_adicionales(v_rut_cliente_id)+fn_monto_contrato(v_rut_cliente_id))) from dual;
+
+
+end;
