@@ -31,15 +31,16 @@ def guardar_token(request):
 
     ##if loged in
 
-    if request.user.is_authenticated:
+    if request.user.is_authenticated :
         dispositivo.user=request.user
 
-    try:
-        dispositivo.save()
-        return HttpResponse(json.dumps({'mensaje':'El token fue guarda3'}))
+    if request.user.is_staff:    
+        try:
+            dispositivo.save()
+            return HttpResponse(json.dumps({'mensaje':'El token fue guarda3'}))
     
-    except:
-        return HttpResponseBadRequest(json.dumps({'mensaje:':'No se ha podido guardar'}))
+        except:
+            return HttpResponseBadRequest(json.dumps({'mensaje:':'No se ha podido guardar'}))
 
 
 
