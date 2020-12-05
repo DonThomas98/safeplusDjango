@@ -10,10 +10,12 @@
   <title>{% block title %}Safeplus{% endblock %}</title>
   <link rel="stylesheet" type="text/css" href={% static '/css/flexboxgrid.css' %}>
 
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
 
-  <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-app.js"></script>
 
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-messaging.js"></script>
 
 
 <!-- TODO: Add SDKs for Firebase products that you want to use
@@ -22,44 +24,63 @@
 <script>
   // Your web app's Firebase configuration
   var firebaseConfig = {
-    apiKey: "AIzaSyBqTrbKgPu3W9zRtCnrpcL99AXM48y6ReY",
-    authDomain: "safeplusdjango.firebaseapp.com",
-    projectId: "safeplusdjango",
-    storageBucket: "safeplusdjango.appspot.com",
-    messagingSenderId: "820622121756",
-    appId: "1:820622121756:web:1092cf0eb7c078222ab8d9"
+    apiKey: "AIzaSyASTMlsCxMMW2a72f9FjWrpZxjPkBy8grg",
+    authDomain: "safeplus-5e183.firebaseapp.com",
+    projectId: "safeplus-5e183",
+    storageBucket: "safeplus-5e183.appspot.com",
+    messagingSenderId: "763838870066",
+    appId: "1:763838870066:web:6fff29d33a5cf267a7422b"
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 
-  let messaging = firebase.messaging();
-  
-//Enlace con serviceWorker
+  let messaging= firebase.messaging();
+
+  //Enlace de sw
+
   navigator.serviceWorker
   .register('./serviceworker.js')
   .then(function(register){
 
-    messaging.userServiceWorker(register);
-
-
-
-    //Solicitud de permiso para notificaciones
+    messaging.useServiceWorker(register);
+    //Solicita el permiso de Notificaciones al usuario
     messaging.requestPermission()
     .then(function(){
 
-      console.log("El usuario acepto recibir notificaciones")
+      console.log("Usuario acepto las notificaciones PUSH")
 
+      return messaging.getToken();
+    })
+    .then(function(token){
 
+      console.log(token);
     })
     .catch(function(e){
 
-      console.log("El usuario no acepto notificaciones")
-
+      console.log("El usuario no acepto notificaciones PUSH")
 
     })
 
+  })
+//Fin solicitud de permiso notificacion
 
-  
+messaging.onMessage(function(payload){
+
+  let tittle='Titulo de la notificacionu';
+
+  let options={
+
+    body:'mensaje del body',
+    icon:'static/images/safe.jpg'
+
+  }
+
+  let mensaje = new Notification(tittle,options);
+
+
+
+});
+
 </script>
 
 </head>
@@ -92,7 +113,7 @@
       
       <div class="row">
         <div class="col-xs-offset-4 col-xs-8">
-         <!--<img class="fotos" src="{% static 'images/safe.jpg' %}" alt="logo">--> 
+
         </div>
         
           <div class="col-xs-12">
