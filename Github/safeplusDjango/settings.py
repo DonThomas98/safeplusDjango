@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'api',
     'pwa',
+    "fcm_django",
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,18 @@ LOGOUT_REDIRECT_URL = '/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'serviceworker.js')
+
+
+FCM_DJANGO_SETTINGS = {
+         # default: _('FCM Django')
+        "APP_VERBOSE_NAME": "safeplus",
+         # Your firebase API KEY
+        "FCM_SERVER_KEY": "AAAAsdhYMjI:APA91bF3EijIbdeioLdC_FKmmLx6k_BZIi3w0Ev236Wwb509PpwxFuj4fUFt1YlN2dTP-UJ8gSCR_T-ucKb6JfyH_Uhbye1hd7CmxA4rhwh2f7RFguXWAnvMTCiWLnOU2ORVOmyLk-yp",
+         # true if you want to have only one active device per registered user at a time
+         # default: False
+        "ONE_DEVICE_PER_USER": False,
+         # devices to which notifications cannot be sent,
+         # are deleted upon receiving error response from FCM
+         # default: False
+        "DELETE_INACTIVE_DEVICES": True,
+}

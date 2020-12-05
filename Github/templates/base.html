@@ -54,6 +54,30 @@
     .then(function(token){
 
       console.log(token);
+
+      //TOKEN SE ENVIA A DJANGO
+      fetch('guardar-token/',{
+        method:'post',
+        headers:{
+          'Content-Type':'application/json',
+          'Accept':'application/json'
+        },
+        body:JSON.stringify({
+
+          'token':token
+
+
+        })
+
+      })
+      .then(function(resultado){
+
+        console.log("Se ha guardado el token")
+      })
+      .catch(function(e){
+
+        console.log("No se pudo guardar el token")
+      })
     })
     .catch(function(e){
 

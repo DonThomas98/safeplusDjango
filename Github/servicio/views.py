@@ -1,10 +1,50 @@
 from django.shortcuts import render
-from django.http import HttpResponse,request
+from django.http import HttpResponse,request,HttpResponseBadRequest
 from django.db import connection
 import cx_Oracle
 from datetime import datetime
 from django.utils import timezone
 from django.shortcuts import redirect 
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf  import csrf_exempt
+from django.core import serializers
+import json
+
+from fcm_django.models import FCMDevice
+
+
+##CASO TOKENS 
+@csrf_exempt
+@require_http_methods(['POST'])
+def guardar_token(request):
+    body = request.body.decode('utf-8')
+    bodyDict=json.loads(body)
+    token=bodyDict['token']
+    existe = FCMDevice.objects.filter(registration_id=token,active=True)
+    
+    if len(existe) > 0:
+        return HttpResponseBadRequest(json.dumps({'mensaje':'El token ya existe'}))
+    
+    dispositivo = FCMDevice()
+    dispositivo.registration_id=token
+    dispositivo.active =True
+
+    ##if loged in
+
+    if request.user.is_authenticated:
+        dispositivo.user=request.user
+
+    try:
+        dispositivo.save()
+        return HttpResponse(json.dumps({'mensaje':'El token fue guarda3'}))
+    
+    except:
+        return HttpResponseBadRequest(json.dumps({'mensaje:':'No se ha podido guardar'}))
+
+
+
+
+
 def Home(request):
     current_user = request.user
     usuario= current_user.id
@@ -453,7 +493,18 @@ def nuevo_accidente (request):
         salida=agregar_accidente(naturaleza,partes_accidentadas,fuente_accidente, fecha_accidente,rut_cliente_id)
 
         if salida==1:
+
+            ##ACA HACEMOS LA NOTIFICACION PUSH
+            dispositivos = FCMDevice.objects.filter(active=True)
+            dispositivos.send_message(
+
+                title="Accidente :"+naturaleza ,
+                body="Accidente en :"+partes_accidentadas,
+                icon ="static/images/safe.jpg"
+
+            )
             data['mensaje'] = 'El accidente se reporto de manera exitosa'
+
 
         else:
             data['mensaje'] = 'El accidente no se pudo ingresar'
@@ -762,3 +813,5 @@ def ver_cargas_laborales(request):
 
     
     return render(request,'asesoria_por_id_accidente.html',data)
+
+

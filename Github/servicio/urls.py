@@ -7,6 +7,7 @@ from .views import *
 urlpatterns = [
     path('', views.Home, name='home'),
     path('', include('pwa.urls')),
+    path('guardar-token/', guardar_token, name='guardar_token'),
     path('extender_cliente', views.extender_cliente, name='extender_cliente'),
     path('crear_cliente', views.crear_cliente, name='crear_cliente'),
     path('crear_trabajador', views.crear_trabajador, name='crear_trabajador'),
