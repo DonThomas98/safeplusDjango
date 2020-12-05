@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 import cx_Oracle
 cx_Oracle.init_oracle_client(lib_dir=r"C:\Users\Thomas\Desktop\instantclient_19_8")
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'account',
     'rest_framework',
     'api',
+    'pwa',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +134,5 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/' 
 
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'serviceworker.js')

@@ -1,10 +1,67 @@
  {% load static %}
+ {% load pwa %}
+
+{% progressive_web_app_meta %}
+
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <title>{% block title %}Safeplus{% endblock %}</title>
   <link rel="stylesheet" type="text/css" href={% static '/css/flexboxgrid.css' %}>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+
+  <script src="https://www.gstatic.com/firebasejs/8.1.2/firebase-app.js"></script>
+
+
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBqTrbKgPu3W9zRtCnrpcL99AXM48y6ReY",
+    authDomain: "safeplusdjango.firebaseapp.com",
+    projectId: "safeplusdjango",
+    storageBucket: "safeplusdjango.appspot.com",
+    messagingSenderId: "820622121756",
+    appId: "1:820622121756:web:1092cf0eb7c078222ab8d9"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  let messaging = firebase.messaging();
+  
+//Enlace con serviceWorker
+  navigator.serviceWorker
+  .register('./serviceworker.js')
+  .then(function(register){
+
+    messaging.userServiceWorker(register);
+
+
+
+    //Solicitud de permiso para notificaciones
+    messaging.requestPermission()
+    .then(function(){
+
+      console.log("El usuario acepto recibir notificaciones")
+
+
+    })
+    .catch(function(e){
+
+      console.log("El usuario no acepto notificaciones")
+
+
+    })
+
+
+  
+</script>
+
 </head>
 <body style="background-color: azure;">
   <main>
@@ -46,7 +103,7 @@
             {% endblock %}
           </div>
       </div>
-        <br><br><br><br>
+        <br><br>
      
       
     {% block content %}
