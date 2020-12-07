@@ -15,6 +15,7 @@ import io
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
 
+from account.models import *
 ##CASO TOKENS 
 @csrf_exempt
 @require_http_methods(['POST'])
@@ -874,6 +875,7 @@ def ver_cargas_laborales(request):
 def ExportarPDF(request):
     current_user = request.user
     usuario= current_user.username
+
     # Create a file-like buffer to receive PDF data.
     buffer = io.BytesIO()
 
@@ -884,12 +886,22 @@ def ExportarPDF(request):
     # See the ReportLab documentation for the full list of functionality.
     p.drawString(1, 1, "Hello world.")
 
-#Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
+    #Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
     p.setFont("Helvetica", 16)
 
     p.drawString(230, 790, u"Reporte Mensual")
     p.setFont("Helvetica", 14)
-    p.drawString(200, 770, u"Reporte de "+usuario)
+    p.drawString(220, 770, u"Reporte de : "+usuario)
+    p.drawString(185, 750, u"Reporte de : 190 con 760")
+    contrato=Contrato.objects.all()
+    
+    for c in contrato:
+
+        bogustext = ("CONTRATO NUMERO %s.  " % c.descripcion)
+
+
+
+    p.drawString(150, 650, u"Contrato :"+bogustext)
     # Close the PDF object cleanly, and we're done.
     p.showPage()
     p.save()
