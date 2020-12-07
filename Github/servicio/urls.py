@@ -25,6 +25,8 @@ urlpatterns = [
     path('asesoria_id', views.ver_asesorias_por_id_accidente, name='ver_asesorias_por_id_accidente'),
     path('nuevo_informe_visita', views.nuevo_informe_visita, name='nuevo_informe_visita'),
     path('nuevo_registro_pagos', views.nuevo_registro_pagos, name='nuevo_registro_pagos'),
+    path('nueva_multa_cliente', views.nueva_multa_cliente, name='nueva_multa_cliente'),
+    path('ExportarPDF', views.ExportarPDF, name='ExportarPDF'),
 
 
 

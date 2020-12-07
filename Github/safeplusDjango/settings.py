@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'api',
     'pwa',
     "fcm_django",
+    'easy_pdf',
 ]
 
 MIDDLEWARE = [

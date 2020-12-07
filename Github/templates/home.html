@@ -13,11 +13,20 @@
 
  {% if request.user.is_staff is not True and request.user.is_active is True  %}
 
-<h4>Acciones rapidas para usuario Cliente:</h4>
+<h4>Vistas de Reporte</h4>
 <div><a href=" {% url 'nuevo_accidente' %}">Reportar Accidente</a></div>
 
+<br>
+<a href=" {% url 'nueva_fiscalizacion' %}">Reportar Fiscalizacion</a>
+
+<br><br>
+<a href=" {% url 'nueva_multa_cliente' %}">Reportar Multa</a>
 
 
+<h4>Vistas de Reporte Mensual</h4>
+
+<br>
+<a href="{% url 'ExportarPDF' %}"><button>Generar PDF</button></a>
  {% endif %}
 
 
@@ -89,12 +98,9 @@
 <br>
 
 
-<a href=" {% url 'nuevo_accidente' %}">nuevo_accidente</a>
 
 
-
-<br><br>
-<a href=" {% url 'nueva_fiscalizacion' %}">nueva_fiscalizacion</a>
+<br>
 
 
 <br>

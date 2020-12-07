@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Safeplus Inicio{% endblock %}
+
+{% block login %}
+
+
+
+{% endblock %}
+ {% block contenido_izquierda %}
+<h2>Registre la multa en el sistema</h2>
+<p>Esto con motivo de registrarlo en el sistema</p>
+<form action="" method="POST">
+{% csrf_token %}
+
+    <label for=""></label>
+
+
+</form>
+
+
+
+  {% endblock %}
+
+ {% block contenido_derecha %}
+
+<form action="" method="POST">
+  {% csrf_token %}
+ <label for="">Monto de la multa</label>
+   <br>
+  <input type="number" name="monto_multa">
+  <br>
+   <label for="">Describa la multa</label>
+     <br>
+  <input type="text" name="descripcion">
+  <br>
+    <label for="">Fecha de la multa</label>
+      <br>
+  <input type="date" name="fecha_multa">
+  <br>
+ 
+
+  <input type="submit" value="Guardar">
+  </form>
+
+{{mensaje}}
+
+  {% endblock contenido_derecha%}
+
+{% block content %}
+
+{% endblock %}

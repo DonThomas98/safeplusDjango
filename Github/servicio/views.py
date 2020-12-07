@@ -9,9 +9,11 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf  import csrf_exempt
 from django.core import serializers
 import json
-
 from fcm_django.models import FCMDevice
-
+##imports para exportar a pdf
+import io
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
 
 ##CASO TOKENS 
 @csrf_exempt
@@ -728,10 +730,10 @@ def nuevo_informe_visita (request):
         EPP_CERTIFICADOS,ID_VISITA_ID)
 
         if salida==1:
-            data['mensaje'] = 'Se ingreso exitosamente la asesoria '
+            data['mensaje'] = 'Se ingreso exitosamente el informe '
 
         else:
-            data['mensaje'] = 'No se pudo ingresar la asesoria'
+            data['mensaje'] = 'No se pudo ingresar el informe'
     return render (request,'nuevo_informe_visita.html',data)
 
 
@@ -791,6 +793,38 @@ def listado_pago_mes_anterior(rut_cliente):
     return lista
 
 
+####CASO VISTAS DEL CLIENTE
+def agregar_multas_cliente( monto_multa,descripcion,fecha_multa,multa_cliente_id ):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida= cursor.var(cx_Oracle.NUMBER)
+    cursor.callproc('prc_insertar_multa',[monto_multa,descripcion,fecha_multa,multa_cliente_id ,salida])
+    return salida.getvalue()
+
+
+def nueva_multa_cliente (request):
+    current_user = request.user
+    rut= current_user.id
+    data= {
+
+    }
+
+    if request.method == "POST":
+        monto_multa = request.POST.get('monto_multa')
+        descripcion = request.POST.get('descripcion')
+        fecha_multa = request.POST.get('fecha_multa')
+        multa_cliente_id = rut
+
+
+        salida=agregar_multas_cliente( monto_multa,descripcion,fecha_multa,multa_cliente_id)
+
+        if salida==1:
+            data['mensaje'] = 'Se ingreso exitosamente la multa'
+
+        else:
+            data['mensaje'] = 'No se pudo ingresar la multa'
+    return render (request,'nueva_multa.html',data)
+
 
 
 
@@ -833,3 +867,34 @@ def ver_cargas_laborales(request):
     return render(request,'asesoria_por_id_accidente.html',data)
 
 
+
+
+###EXPORT DE PDF PARA EL CLIENTE
+
+def ExportarPDF(request):
+    current_user = request.user
+    usuario= current_user.username
+    # Create a file-like buffer to receive PDF data.
+    buffer = io.BytesIO()
+
+    # Create the PDF object, using the buffer as its "file."
+    p = canvas.Canvas(buffer)
+
+    # Draw things on the PDF. Here's where the PDF generation happens.
+    # See the ReportLab documentation for the full list of functionality.
+    p.drawString(1, 1, "Hello world.")
+
+#Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
+    p.setFont("Helvetica", 16)
+
+    p.drawString(230, 790, u"Reporte Mensual")
+    p.setFont("Helvetica", 14)
+    p.drawString(200, 770, u"Reporte de "+usuario)
+    # Close the PDF object cleanly, and we're done.
+    p.showPage()
+    p.save()
+
+    # FileResponse sets the Content-Disposition header so that browsers
+    # present the option to save the file.
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename='Reporte_mensual.pdf')
