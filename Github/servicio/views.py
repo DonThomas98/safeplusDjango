@@ -16,6 +16,9 @@ from django.http import FileResponse
 from reportlab.pdfgen import canvas
 
 from account.models import *
+
+from django.contrib.auth.models import User 
+
 ##CASO TOKENS 
 @csrf_exempt
 @require_http_methods(['POST'])
@@ -895,7 +898,6 @@ def ExportarPDF(request):
     accidente=Accidente.objects.all().filter(rut_cliente_id=identificacion)
     visitas_terreno=VisitaTerreno.objects.all().filter(rut_cliente_id=identificacion).filter(motivo_visita='rutinaria')
     multas=Multa.objects.all().filter(multa_cliente_id=identificacion)
-
     ##VARIABLES QUE SE USARAN PARA EL PDF
     contrato_desc = (" %s.  " % contrato.descripcion)
     cantidad_accidentes=(" %s " % accidente.count())
@@ -904,17 +906,16 @@ def ExportarPDF(request):
     cantidad_multas=(" %s " % multas.count())
 
     ##VARIABLES QUE VAN EN UN CICLO FOR
-   ## asesoria_accidente=Asesoria.objects.all().filter(evento='Accidente').filter(id_accidente_id=id_accidente)
 
    ##cantidad_asesorias_accidente=(" %s " % asesoria_accidente.count())
 
 
 
-    p.setFont("Helvetica", 16)
+    p.setFont("Helvetica", 20)
 
     ##ACA VAN LOS STRING QUE SE RENDERIZAN EN EL PDF
     p.drawString(230, 790, u"Reporte Mensual")
-    p.setFont("Helvetica", 14)
+    p.setFont("Helvetica", 18)
     p.drawString(50, 715, u"Reporte de  : "+usuario)
     p.drawString(280, 715, u"Contrato Tipo: "+contrato_desc)
 
@@ -925,11 +926,57 @@ def ExportarPDF(request):
 
     p.drawString(50, 655, u"Cliente tuvo este mes :"+cantidad_visitas_terreno+" Visitas Rutinarias")
 
+
+
     p.drawString(50, 625, u"Cliente tuvo este mes :"+cantidad_multas+" Multas")
 
 
     # Close the PDF object cleanly, and we're done.
     p.showPage()
+    ##P SHOWPAGE HACE QUE  LO ESCRITO DESPUES DE ESTE SEA EN UNA PAGINA NUEVA , PASA A VISTA DE ACCIDENTES
+    p.setFont("Helvetica", 12)
+    p.drawString(190, 790, u"Vista de accidentes y asesorias Detallado")
+
+    ##detalles = [(accidente.id, accidente.naturaleza, accidente.partes_accidentadas, accidente.fecha_accidente) for persona in Accidente.objects.all().filter(rut_cliente_id=identificacion)]
+    for i, acci in enumerate(accidente):
+        p.drawString(30, 730+i*-60, u"Accidente Folio "+str(acci.id) +" tipo "+acci.naturaleza+" con "+acci.partes_accidentadas+",accidentada "+"el "+str(acci.fecha_accidente))
+        asesoria_accidente=Asesoria.objects.all().filter(evento='Accidente').filter(id_accidente_id=acci.id)
+        for i, ases_visi in  enumerate(asesoria_accidente):
+            p.drawString(30, 700+i*-30, u"Asesoria id "+str(ases_visi.id)+" con la siguiente propuesta "+ases_visi.propuesta)
+
+
+
+    p.showPage()
+    ##VISTA DE LAS DISTINTAS VISITAS DEL MES
+    p.setFont("Helvetica", 12)
+
+    p.drawString(190, 790, u"Vista de visitas Rutinarias")
+    for i, visita in enumerate(visitas_terreno):
+        p.drawString(30, 730+i*-60, u"Visita con fecha "+str(visita.fecha_visita) +" con motivo de visita "+visita.motivo_visita+" por el trabajdor de id: "+str(visita.rut_trabajador_id))
+
+    ##CERRAMOS LA PAGINA AL TERMINAR CON LAS VISITAS A TERRENO
+    p.showPage()
+
+    ##VISTA DE LAS DISTINTAS Capacitaciones DEL MES
+    p.setFont("Helvetica", 12)
+
+    p.drawString(190, 790, u"Vista de Capacitaciones")
+
+    for i, acci in enumerate(accidente):
+        p.drawString(30, 730+i*-60, u"Accidente Folio "+str(acci.id) +" tipo "+acci.naturaleza+" con "+acci.partes_accidentadas+",accidentada "+"el "+str(acci.fecha_accidente))
+        asesoria_accidente=Asesoria.objects.all().filter(evento='Accidente').filter(id_accidente_id=acci.id)
+        for i, ases_visi in  enumerate(asesoria_accidente):
+            p.drawString(30, 700+i*-30, u"Asesoria id "+str(ases_visi.id)+" con la siguiente propuesta "+ases_visi.propuesta)
+    ##SE CIERRA LA VISTA DE CAPACITACIONES 
+    p.showPage()
+
+
+
+
+
+
+
+    ##GUARDA LOS DATOS DEL PDF
     p.save()
 
     # FileResponse sets the Content-Disposition header so that browsers
