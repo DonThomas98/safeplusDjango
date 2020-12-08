@@ -873,9 +873,12 @@ def ver_cargas_laborales(request):
 ###EXPORT DE PDF PARA EL CLIENTE
 
 def ExportarPDF(request):
+    ##VARIABLES PARA CONSEGUIR LA ID Y USERNAME DEL USER CONECTADO , CLIENTE
     current_user = request.user
+    identificacion= current_user.id
     usuario= current_user.username
 
+    ##MES ACTUAL PARA FILTRAR POR ESTE MES
     # Create a file-like buffer to receive PDF data.
     buffer = io.BytesIO()
 
@@ -886,22 +889,45 @@ def ExportarPDF(request):
     # See the ReportLab documentation for the full list of functionality.
     p.drawString(1, 1, "Hello world.")
 
-    #Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
+
+    ##LLAMAMOS LOS OBJECTOS AQUI Y LOS FILTRAMOS DE ACUERDO A LA ID DEL USER LOGEADO
+    contrato=Contrato.objects.get(id=identificacion)
+    accidente=Accidente.objects.all().filter(rut_cliente_id=identificacion)
+    visitas_terreno=VisitaTerreno.objects.all().filter(rut_cliente_id=identificacion).filter(motivo_visita='rutinaria')
+    multas=Multa.objects.all().filter(multa_cliente_id=identificacion)
+
+    ##VARIABLES QUE SE USARAN PARA EL PDF
+    contrato_desc = (" %s.  " % contrato.descripcion)
+    cantidad_accidentes=(" %s " % accidente.count())
+
+    cantidad_visitas_terreno=(" %s " % visitas_terreno.count())
+    cantidad_multas=(" %s " % multas.count())
+
+    ##VARIABLES QUE VAN EN UN CICLO FOR
+   ## asesoria_accidente=Asesoria.objects.all().filter(evento='Accidente').filter(id_accidente_id=id_accidente)
+
+   ##cantidad_asesorias_accidente=(" %s " % asesoria_accidente.count())
+
+
+
     p.setFont("Helvetica", 16)
 
+    ##ACA VAN LOS STRING QUE SE RENDERIZAN EN EL PDF
     p.drawString(230, 790, u"Reporte Mensual")
     p.setFont("Helvetica", 14)
-    p.drawString(220, 770, u"Reporte de : "+usuario)
-    p.drawString(185, 750, u"Reporte de : 190 con 760")
-    contrato=Contrato.objects.all()
-    
-    for c in contrato:
-
-        bogustext = ("CONTRATO NUMERO %s.  " % c.descripcion)
+    p.drawString(50, 715, u"Reporte de  : "+usuario)
+    p.drawString(280, 715, u"Contrato Tipo: "+contrato_desc)
 
 
+    p.drawString(50, 685, u"Cliente tuvo este mes :"+cantidad_accidentes+" Accidentes")
+  ##  p.drawString(50, 685, u"Y :"+cantidad_asesorias_accidente+" asesorias")
 
-    p.drawString(150, 650, u"Contrato :"+bogustext)
+
+    p.drawString(50, 655, u"Cliente tuvo este mes :"+cantidad_visitas_terreno+" Visitas Rutinarias")
+
+    p.drawString(50, 625, u"Cliente tuvo este mes :"+cantidad_multas+" Multas")
+
+
     # Close the PDF object cleanly, and we're done.
     p.showPage()
     p.save()
