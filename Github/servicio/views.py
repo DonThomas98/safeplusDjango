@@ -18,7 +18,9 @@ from reportlab.pdfgen import canvas
 from account.models import *
 
 from django.contrib.auth.models import User 
-
+##PARA FILTRAR POR FECHA LOS OBJETOS DEL PDF
+from datetime import date
+today = date.today()
 ##CASO TOKENS 
 @csrf_exempt
 @require_http_methods(['POST'])
@@ -890,14 +892,13 @@ def ExportarPDF(request):
 
     # Draw things on the PDF. Here's where the PDF generation happens.
     # See the ReportLab documentation for the full list of functionality.
-    p.drawString(1, 1, "Hello world.")
 
 
     ##LLAMAMOS LOS OBJECTOS AQUI Y LOS FILTRAMOS DE ACUERDO A LA ID DEL USER LOGEADO
     contrato=Contrato.objects.get(id=identificacion)
-    accidente=Accidente.objects.all().filter(rut_cliente_id=identificacion)
-    visitas_terreno=VisitaTerreno.objects.all().filter(rut_cliente_id=identificacion).filter(motivo_visita='rutinaria')
-    multas=Multa.objects.all().filter(multa_cliente_id=identificacion)
+    accidente=Accidente.objects.all().filter(rut_cliente_id=identificacion).filter((fecha_accidente.month)==today.month).filter((fecha_accidente.year)==today.year)
+    visitas_terreno=VisitaTerreno.objects.all().filter(rut_cliente_id=identificacion).filter(motivo_visita='rutinaria').filter((fecha_visita.month)==today.month).filter((fecha_visita.year)==today.year)
+    multas=Multa.objects.all().filter(multa_cliente_id=identificacion).filter((fecha_multa.month)==today.month).filter((fecha_multa.year)==today.year)
     ##VARIABLES QUE SE USARAN PARA EL PDF
     contrato_desc = (" %s.  " % contrato.descripcion)
     cantidad_accidentes=(" %s " % accidente.count())
@@ -914,7 +915,7 @@ def ExportarPDF(request):
     p.setFont("Helvetica", 20)
 
     ##ACA VAN LOS STRING QUE SE RENDERIZAN EN EL PDF
-    p.drawString(230, 790, u"Reporte Mensual")
+    p.drawString(230, 790, u"Reporte Mensual ")
     p.setFont("Helvetica", 18)
     p.drawString(50, 715, u"Reporte de  : "+usuario)
     p.drawString(280, 715, u"Contrato Tipo: "+contrato_desc)
@@ -969,8 +970,11 @@ def ExportarPDF(request):
             p.drawString(30, 700+i*-30, u"Asesoria id "+str(ases_visi.id)+" con la siguiente propuesta "+ases_visi.propuesta)
     ##SE CIERRA LA VISTA DE CAPACITACIONES 
     p.showPage()
+    p.setFont("Helvetica", 12)
 
-
+    p.drawString(190, 790, u"Vista de Multas")
+    for i, mult in enumerate(multas):
+        p.drawString(30, 730+i*-30, u"Cliente tuvo multa por : "+str(mult.monto_multa) +" por "+mult.descripcion+" con fecha "+str(mult.fecha_multa))
 
 
 
