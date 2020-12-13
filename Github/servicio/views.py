@@ -15,7 +15,7 @@ import io
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
 
-from account.models import *
+from account.models import Contrato,VisitaTerreno,Accidente,Contrato,Multa,Asesoria,Capacitacion
 
 from django.contrib.auth.models import User 
 ##PARA FILTRAR POR FECHA LOS OBJETOS DEL PDF
@@ -895,15 +895,18 @@ def ExportarPDF(request):
 
 
     ##LLAMAMOS LOS OBJECTOS AQUI Y LOS FILTRAMOS DE ACUERDO A LA ID DEL USER LOGEADO
-    contrato=Contrato.objects.get(id=identificacion)
-    accidente=Accidente.objects.all().filter(rut_cliente_id=identificacion).filter((fecha_accidente.month)==today.month).filter((fecha_accidente.year)==today.year)
-    visitas_terreno=VisitaTerreno.objects.all().filter(rut_cliente_id=identificacion).filter(motivo_visita='rutinaria').filter((fecha_visita.month)==today.month).filter((fecha_visita.year)==today.year)
-    multas=Multa.objects.all().filter(multa_cliente_id=identificacion).filter((fecha_multa.month)==today.month).filter((fecha_multa.year)==today.year)
+    print(identificacion)
+    contrato=Contrato.objects.get(rut_cliente_id=identificacion)
+    accidente=Accidente.objects.all().filter(rut_cliente_id=identificacion).filter(fecha_accidente__month =today.month).filter(fecha_accidente__year=today.year)
+    visitas_terreno= VisitaTerreno.objects.all().filter(rut_cliente_id=identificacion).filter(motivo_visita='rutinaria').filter(fecha_visita__month=today.month).filter(fecha_visita__year=today.year)
+    multas=Multa.objects.all().filter(multa_cliente_id=identificacion).filter(fecha_multa__month=today.month).filter(fecha_multa__year=today.year)
+    capacitaciones=Capacitacion.objects.all().filter(rut_cliente_id=identificacion)
     ##VARIABLES QUE SE USARAN PARA EL PDF
     contrato_desc = (" %s.  " % contrato.descripcion)
     cantidad_accidentes=(" %s " % accidente.count())
 
     cantidad_visitas_terreno=(" %s " % visitas_terreno.count())
+    cantidad_capacitaciones=(" %s " % capacitaciones.count())
     cantidad_multas=(" %s " % multas.count())
 
     ##VARIABLES QUE VAN EN UN CICLO FOR
@@ -911,9 +914,9 @@ def ExportarPDF(request):
    ##cantidad_asesorias_accidente=(" %s " % asesoria_accidente.count())
 
 
-
     p.setFont("Helvetica", 20)
 
+    
     ##ACA VAN LOS STRING QUE SE RENDERIZAN EN EL PDF
     p.drawString(230, 790, u"Reporte Mensual ")
     p.setFont("Helvetica", 18)
@@ -922,14 +925,14 @@ def ExportarPDF(request):
 
 
     p.drawString(50, 685, u"Cliente tuvo este mes :"+cantidad_accidentes+" Accidentes")
-  ##  p.drawString(50, 685, u"Y :"+cantidad_asesorias_accidente+" asesorias")
-
 
     p.drawString(50, 655, u"Cliente tuvo este mes :"+cantidad_visitas_terreno+" Visitas Rutinarias")
 
+    p.drawString(50, 625, u"Cliente tuvo este mes :"+cantidad_capacitaciones+" Capacitaciones")
+
+    p.drawString(50, 595, u"Cliente tuvo este mes :"+cantidad_multas+" Multas")
 
 
-    p.drawString(50, 625, u"Cliente tuvo este mes :"+cantidad_multas+" Multas")
 
 
     # Close the PDF object cleanly, and we're done.
@@ -963,11 +966,10 @@ def ExportarPDF(request):
 
     p.drawString(190, 790, u"Vista de Capacitaciones")
 
-    for i, acci in enumerate(accidente):
-        p.drawString(30, 730+i*-60, u"Accidente Folio "+str(acci.id) +" tipo "+acci.naturaleza+" con "+acci.partes_accidentadas+",accidentada "+"el "+str(acci.fecha_accidente))
-        asesoria_accidente=Asesoria.objects.all().filter(evento='Accidente').filter(id_accidente_id=acci.id)
-        for i, ases_visi in  enumerate(asesoria_accidente):
-            p.drawString(30, 700+i*-30, u"Asesoria id "+str(ases_visi.id)+" con la siguiente propuesta "+ases_visi.propuesta)
+    for i, capa in enumerate(capacitaciones):
+        p.drawString(30, 730+i*-60, u"Capacitacion N "+str(capa.id) +" con fecha  "+str(capa.fecha_capacitacion)+" a las "+capa.hora_capacitacion+",realizada por  "+str(capa.rut_trabajador_id))
+
+
     ##SE CIERRA LA VISTA DE CAPACITACIONES 
     p.showPage()
     p.setFont("Helvetica", 12)
